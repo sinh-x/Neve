@@ -7,7 +7,7 @@
         owner = "oflisback";
         repo = "obsidian-bridge.nvim";
         rev = "ad05b2ecdf0d22a3a9387ae4684acd208695d466";
-        sha256 = "";
+        sha256 = "sha256-Phm4/Qjl7ebga7ViBz1K9In/favCBJPjsa/XU5U0J84=";
       };
     })
   ];
