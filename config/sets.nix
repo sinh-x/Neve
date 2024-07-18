@@ -16,8 +16,6 @@
       showtabline = 2;
       expandtab = true;
 
-      clipboard = "unnamedplus";
-
       # Enable auto indenting and set it to spaces
       smartindent = true;
       shiftwidth = 2;
