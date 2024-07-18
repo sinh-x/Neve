@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{opkgs, ...}: {
   extraPlugins = with pkgs.vimUtils; [
     (buildVimPlugin {
       pname = "obsidian-bridge.nvim";
@@ -12,6 +12,11 @@
     })
   ];
   extraConfigLua = ''
+    local ob = require('obsidian-bridge-nvim')
+    ob.setup({
+       obsidian_server_address = "http://localhost:27123"
+       scroll_sync = false -- See "Sync of buffer scrolling" section below
+    })
   '';
 
   keymaps = [
