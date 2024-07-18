@@ -1,5 +1,5 @@
 {
   plugins.tmux-navigator = {
-    enable = true;
+    enable = false;
   };
 }
