@@ -11,6 +11,7 @@
     ./colorschemes/rose-pine.nix
 
     ./completion/cmp.nix
+    ./completion/cmp-r.nix
     ./completion/copilot.nix
     ./completion/lspkind.nix
 
@@ -30,6 +31,7 @@
     ./languages/treesitter/treesitter-textobjects.nix
     ./languages/treesitter/ts-autotag.nix
     ./languages/treesitter/ts-context-commentstring.nix
+    ./languages/Rnvim.nix
 
     ./lsp/conform.nix
     ./lsp/fidget.nix

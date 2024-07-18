@@ -1,6 +1,7 @@
 # Thanks for the keybinds primeagen and folke!
 {
   globals.mapleader = " ";
+  globals.maplocalleader = "\\";
 
   # TODO: Move general mappings to which-key
   keymaps = [
