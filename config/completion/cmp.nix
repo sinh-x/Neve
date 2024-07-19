@@ -3,7 +3,7 @@
     cmp-nvim-lsp = {enable = true;}; # lsp
     cmp-buffer = {enable = true;};
     copilot-cmp = {enable = true;}; # copilot suggestions
-    cmp-git = {enable = true;}; # g
+    cmp-git = {enable = true;}; # git
     cmp-path = {enable = true;}; # file system paths
     cmp_luasnip = {enable = true;}; # snippets
     cmp-cmdline = {enable = false;}; # autocomplete for cmdline
@@ -113,19 +113,44 @@
 
     -- Set configuration for specific filetype.
       cmp.setup.filetype('gitcommit', {
-          sources = cmp.config.sources({
-              { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-              }, {
-              { name = 'buffer' },
-              })
+        sources = cmp.config.sources({
+          { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+          }, {
+          { name = 'buffer' },
           })
+        })
+
+    -- Setup cmp for R
+      cmp.setup.filetype('r', {
+        sources = cmp.config.sources({
+          { 
+            name = 'path',
+            priority = 1000,
+            option = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function()
+                return vim.fn.getcwd()
+              end,
+            },
+          }, -- You can specify the `cmp_git` source if you were installed it.
+        }, {
+          { name = 'cmp_r' },
+        }, {
+          { name = 'buffer' },
+        }, {
+          { name = 'luasnip' },
+        }, {
+          { name = 'copilot' },
+        })
+      })
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline(':', {
-          sources = cmp.config.sources({
-              { name = 'path' }
-              }, {
-              { name = 'cmdline' }
-              }),
-          })  '';
+        sources = cmp.config.sources({
+          { name = 'path' }
+          }, {
+          { name = 'cmdline' }
+          }),
+        })  '';
 }
