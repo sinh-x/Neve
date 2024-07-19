@@ -514,6 +514,14 @@
         desc = "Switch between projects";
       };
     }
+    {
+      mode = "n";
+      key = "<leader>aa";
+      action = "<cmd>CopilotChatToggle<cr>";
+      options = {
+        desc = "CopilotChat Toggle";
+      };
+    }
   ];
   extraConfigLua = ''
     local notify = require("notify")
