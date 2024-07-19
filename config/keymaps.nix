@@ -47,7 +47,12 @@
     #   };
     # }
 
-    # Keybinds to make split navigation easier.
+    {
+      mode = "n";
+      key = "<Esc>";
+      action = "<cmd>nohlsearch<CR>";
+    }
+
     #  Use CTRL+<hjkl> to switch between windows
     #
     #  See `:help wincmd` for a list of all window commands
