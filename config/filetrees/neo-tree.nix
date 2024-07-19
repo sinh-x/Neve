@@ -13,15 +13,43 @@
         enabled = true;
       };
     };
-    window = {
-      width = 40;
-      height = 15;
-      autoExpandWidth = false;
-      mappings = {
-        "<space>" = "none";
-      };
-    };
   };
+
+  extraConfigLua = ''
+    require("neo-tree").setup({
+      event_handlers = {
+      {
+        event = 'neo_tree_buffer_enter',
+        handler = function()
+          vim.opt_local.relativenumber = true
+        end,
+      },
+      },
+      window = {
+        position = 'right',
+        mappings = {
+          ['A'] = {
+            'add_directory',
+            config = {
+              show_path = 'relative', -- "none", "relative", "absolute"
+            },
+          },
+          ['a'] = {
+            'add',
+            config = {
+              show_path = 'relative', -- "none", "relative", "absolute"
+            },
+          },
+          ['m'] = {
+            'move',
+            config = {
+              show_path = 'relative', -- "none", "relative", "absolute"
+            },
+          },
+        },
+      },
+      })
+  '';
 
   keymaps = [
     {
