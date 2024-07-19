@@ -59,6 +59,10 @@
         pyright = {enable = true;};
         ruff-lsp = {enable = true;};
 
+        julials = {
+          enable = true;
+        };
+
         r-language-server = {
           enable = true;
           autostart = true;
