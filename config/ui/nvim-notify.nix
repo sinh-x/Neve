@@ -5,7 +5,7 @@
     fps = 60;
     render = "default";
     timeout = 10000;
-    topDown = true;
+    topDown = false;
   };
   keymaps = [
     {
