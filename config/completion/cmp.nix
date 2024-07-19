@@ -104,12 +104,23 @@
 
     local cmp = require'cmp'
 
+      cmp.setup({
+        sources = cmp.config.sources({
+          { name = 'path' },
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+        }, {
+          { name = 'copilot' },
+        }),
+      })
+
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline({'/', "?" }, {
-          sources = {
+        sources = {
           { name = 'buffer' }
-          }
-          })
+        }
+      })
 
     -- Set configuration for specific filetype.
       cmp.setup.filetype('gitcommit', {
