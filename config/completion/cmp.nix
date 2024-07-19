@@ -3,6 +3,7 @@
     cmp-nvim-lsp = {enable = true;}; # lsp
     cmp-buffer = {enable = true;};
     copilot-cmp = {enable = true;}; # copilot suggestions
+    cmp-fish = {enable = true;};
     cmp-git = {enable = true;}; # git
     cmp-path = {enable = true;}; # file system paths
     cmp_luasnip = {enable = true;}; # snippets
@@ -144,12 +145,10 @@
                 return vim.fn.getcwd()
               end,
             },
-          }, -- You can specify the `cmp_git` source if you were installed it.
-        }, {
+          },
           { name = 'cmp_r' },
-        }, {
+          { name = 'nvim_lsp' },
           { name = 'buffer' },
-        }, {
           { name = 'luasnip' },
         }, {
           { name = 'copilot' },

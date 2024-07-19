@@ -59,6 +59,12 @@
         pyright = {enable = true;};
         ruff-lsp = {enable = true;};
 
+        r-language-server = {
+          enable = true;
+          autostart = true;
+          filetypes = ["r"];
+        };
+
         rust-analyzer = {
           enable = true;
           installCargo = true;
