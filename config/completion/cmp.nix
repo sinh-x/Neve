@@ -154,6 +154,27 @@
           { name = 'copilot' },
         })
       })
+    
+      cmp.setup.filetype('yml', {
+        sources = cmp.config.sources({
+          { 
+            name = 'path',
+            priority = 1000,
+            option = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function()
+                return vim.fn.getcwd()
+              end,
+            },
+          },
+          { name = 'nvim_lsp' },
+          { name = 'buffer' },
+          { name = 'luasnip' },
+        }, {
+          { name = 'copilot' },
+        })
+      })
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline(':', {
