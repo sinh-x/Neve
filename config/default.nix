@@ -67,7 +67,6 @@
     ./utils/neotest.nix
     ./utils/nvim-autopairs.nix
     ./utils/nvim-colorizer.nix
-    ./utils/nvim-surround.nix
     ./utils/obsidian.nix
     ./utils/obsidian-bridge.nix
     ./utils/oil.nix
