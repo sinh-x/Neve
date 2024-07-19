@@ -73,7 +73,7 @@
     ./utils/persistence.nix
     ./utils/plenary.nix
     ./utils/project-nvim.nix
-    ./utils/tmux-navigator.nix
+    ./utils/qmk.nix
     ./utils/todo-comments.nix
     ./utils/toggleterm.nix
     ./utils/ultimate-autopair.nix
