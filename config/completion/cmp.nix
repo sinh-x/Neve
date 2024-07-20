@@ -154,8 +154,8 @@
           { name = 'copilot' },
         })
       })
-    
-      cmp.setup.filetype('yml', {
+      
+      cmp.setup.filetype('yaml', {
         sources = cmp.config.sources({
           { 
             name = 'path',

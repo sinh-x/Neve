@@ -33,6 +33,7 @@
     ./languages/treesitter/ts-context-commentstring.nix
     ./languages/Rnvim.nix
     ./languages/julia-cell.nix
+    ./languages/rust.nix
 
     ./lsp/conform.nix
     ./lsp/fidget.nix

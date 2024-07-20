@@ -89,6 +89,10 @@
             };
           };
         };
+        svelte = {
+          enable = true;
+          filetypes = ["typescript" "javascript" "svelte" "html" "css"];
+        };
       };
       # keymaps = {
       #   silent = true;

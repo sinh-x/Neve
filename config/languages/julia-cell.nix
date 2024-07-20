@@ -1,3 +1,6 @@
 {
-  plugins.julia-cell.enable = true;
+  plugins = {
+    julia-cell.enable = true;
+    vim-slime.enable = true;
+  };
 }
