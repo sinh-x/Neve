@@ -63,6 +63,7 @@
     ./utils/hardtime.nix
     ./utils/harpoon.nix
     ./utils/illuminate.nix
+    ./utils/markdown.nix
     ./utils/markdown-preview.nix
     ./utils/mini.nix
     ./utils/neodev.nix
@@ -72,6 +73,7 @@
     ./utils/obsidian.nix
     ./utils/obsidian-bridge.nix
     ./utils/oil.nix
+    ./utils/outline.nix
     ./utils/persistence.nix
     ./utils/plenary.nix
     ./utils/project-nvim.nix

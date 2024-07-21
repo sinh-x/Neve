@@ -282,6 +282,16 @@
       };
     }
 
+    {
+      mode = "i";
+      key = "<C-s>";
+      action = "<cmd>w<cr><esc>";
+      options = {
+        silent = true;
+        desc = "Save file";
+      };
+    }
+
     # Quit/Session
     {
       mode = "n";

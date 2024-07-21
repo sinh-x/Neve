@@ -123,15 +123,15 @@
       };
     }
 
-    {
-      mode = "n";
-      key = "<leader>cw";
-      action = "<cmd>Lspsaga outline<CR>";
-      options = {
-        desc = "Outline";
-        silent = true;
-      };
-    }
+    # {
+    #   mode = "n";
+    #   key = "<leader>cw";
+    #   action = "<cmd>Lspsaga outline<CR>";
+    #   options = {
+    #     desc = "Outline";
+    #     silent = true;
+    #   };
+    # }
 
     {
       mode = "n";
