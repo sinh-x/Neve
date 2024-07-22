@@ -3,6 +3,7 @@
   imports = [
     ./sets.nix
     ./keymaps.nix
+    ./autoCmd.nix
 
     ./bufferlines/bufferline.nix
 
