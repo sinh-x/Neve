@@ -14,8 +14,8 @@
   extraConfigLua = ''
       require("staline").setup({
       sections = {
-        left = { "-mode", " ", "branch" },
-        mid = { "lsp_name" },
+        left = { "-mode", " ", "branch", " ", "cwd" },
+        mid = { "lsp_name", " ", vim.fn.reg_recording(),  },
         right = { "file_name", "line_column" },
       },
       inactive_sections = {

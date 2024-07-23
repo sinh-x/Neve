@@ -19,7 +19,7 @@
   keymaps = [
     {
       mode = "n";
-      key = "<leader>cw";
+      key = "<leader>co";
       action = "<cmd>Outline<cr>";
       options = {
         silent = true;

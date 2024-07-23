@@ -72,5 +72,29 @@
       event = "FocusLost";
       command = "silent! wa";
     }
+    {
+      desc = "Recording Enter";
+      event = "RecordingEnter";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+            vim.api.nvim_echo({{'Recording @' .. vim.fn.reg_recording(), 'WarningMsg'}}, false, {})
+          end
+        '';
+      };
+    }
+    {
+      desc = "Recording Leave";
+      event = "RecordingLeave";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+            vim.api.nvim_echo({{'Recorded @' .. vim.fn.reg_recording(), 'WarningMsg'}}, false, {})
+          end
+        '';
+      };
+    }
   ];
 }

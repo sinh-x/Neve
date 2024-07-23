@@ -537,6 +537,14 @@
         desc = "CopilotChat Toggle";
       };
     }
+    {
+      mode = "v";
+      key = "<leader>aa";
+      action = "<cmd>CopilotChatToggle<cr>";
+      options = {
+        desc = "CopilotChat Toggle";
+      };
+    }
   ];
   extraConfigLua = ''
     local notify = require("notify")
