@@ -3,6 +3,9 @@
     enable = true;
     enableTelescope = true;
     keymapsSilent = true;
+    menu = {
+      width = 120;
+    };
     keymaps = {
       addFile = "<leader>H";
       toggleQuickMenu = "<C-e>";

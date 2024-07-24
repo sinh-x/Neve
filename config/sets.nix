@@ -117,6 +117,8 @@
       local opt = vim.opt
       local g = vim.g
       local o = vim.o
+
+      opt.conceallevel = 2
         -- Neovide
       if g.neovide then
         -- Neovide options
