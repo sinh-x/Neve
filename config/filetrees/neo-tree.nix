@@ -26,7 +26,7 @@
       },
       },
       window = {
-        position = 'right',
+        position = 'left',
         mappings = {
           ['A'] = {
             'add_directory',
