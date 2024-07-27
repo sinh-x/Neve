@@ -9,6 +9,7 @@
       javascriptreact = [["prettierd" "prettier"]];
       typescript = [["prettierd" "prettier"]];
       typescriptreact = [["prettierd" "prettier"]];
+      json = [["prettierd" "prettier"]];
       java = ["google-java-format"];
       python = ["black"];
       lua = ["stylua"];
