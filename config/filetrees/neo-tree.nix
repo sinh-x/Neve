@@ -18,15 +18,30 @@
   extraConfigLua = ''
     require("neo-tree").setup({
       event_handlers = {
-      {
-        event = 'neo_tree_buffer_enter',
-        handler = function()
-          vim.opt_local.relativenumber = true
-        end,
-      },
+        {
+          event = 'neo_tree_buffer_enter',
+          handler = function()
+            vim.opt_local.relativenumber = true
+          end,
+        },
+        {
+          event = "file_open_requested",
+          handler = function()
+            -- auto close
+            -- vimc.cmd("Neotree close")
+            -- OR
+            require("neo-tree.command").execute({ action = "close" })
+          end
+        },
+        {
+          event = 'file_opened',
+          handler = function(file_path)
+            require("neo-tree").close_all()
+          end,
+        },
       },
       window = {
-        position = 'left',
+        position = 'float',
         mappings = {
           ['A'] = {
             'add_directory',
