@@ -16,6 +16,14 @@
       showtabline = 2;
       expandtab = true;
 
+      clipboard = {
+        register = "unnamedplus";
+        provider = {
+          wl-copy.enable = true;
+          xclip.enable = true;
+        };
+      };
+
       # Enable auto indenting and set it to spaces
       smartindent = true;
       shiftwidth = 2;
