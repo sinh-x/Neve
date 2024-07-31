@@ -1,6 +1,6 @@
 {
   colorschemes = {
-    catppuccin = {
+    tokyonight = {
       enable = true;
     };
   };
