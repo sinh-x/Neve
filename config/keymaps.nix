@@ -532,7 +532,7 @@
     {
       mode = "n";
       key = "<leader>aa";
-      action = "<cmd>CopilotChatToggle<cr>";
+      action = "ggvG$<cmd>CopilotChatToggle<cr>";
       options = {
         desc = "CopilotChat Toggle";
       };
