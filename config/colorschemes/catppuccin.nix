@@ -1,7 +1,7 @@
 {
   colorschemes = {
     catppuccin = {
-      enable = false;
+      enable = true;
       settings = {
         background = {
           light = "macchiato";
@@ -11,7 +11,7 @@
         disable_bold = false;
         disable_italic = false;
         disable_underline = false;
-        transparent_background = true;
+        transparent_background = false;
         term_colors = true;
         integrations = {
           cmp = true;
@@ -31,7 +31,7 @@
           mini.enabled = true;
           native_lsp = {
             enabled = true;
-            inlay_hints = {
+            unlay_hints = {
               background = true;
             };
             underlines = {
