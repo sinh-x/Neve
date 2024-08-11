@@ -54,7 +54,7 @@
       winPosition = "right"; # left or right
       keys = {
         jump = "e";
-        quit = "q";
+        quit = "tdq";
         toggleOrJump = "o";
       };
     };
@@ -69,7 +69,7 @@
       key = "gd";
       action = "<cmd>Lspsaga finder def<CR>";
       options = {
-        desc = "Goto Definition";
+        desc = "Gotlto Definition";
         silent = true;
       };
     }

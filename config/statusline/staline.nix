@@ -12,32 +12,61 @@
     })
   ];
   extraConfigLua = ''
-      require("staline").setup({
+      ---Indicators for special modes,
+      ---@return string status
+      local function extra_mode_status()
+        -- recording macros
+        local reg_recording = vim.fn.reg_recording()
+        if reg_recording ~= "" then
+          return " @" .. reg_recording
+        end
+        -- executing macros
+        local reg_executing = vim.fn.reg_executing()
+        if reg_executing ~= "" then
+          return ' @' .. reg_executing
+        end
+        -- ix mode (<C-x> in insert mode to trigger different builtin completion sources)
+        local mode = vim.api.nvim_get_mode().mode
+        if mode == 'ix' then
+          return '^X: (^]^D^E^F^I^K^L^N^O^Ps^U^V^Y)'
+        end
+        return ""
+      end
+
+
+      require'staline'.setup {
+
       sections = {
-        left = { "-mode", " ", "branch", " ", "cwd" },
-        mid = { "lsp_name", " ", vim.fn.reg_recording(),  },
-        right = { "file_name", "line_column" },
+        left = {
+          ' ', 'right_sep_double', '-mode', 'left_sep_double', ' ',
+          'right_sep', '-file_name', 'left_sep', ' ',
+          'right_sep_double', '-branch', 'left_sep_double', ' ',
+        },
+        mid  = {'lsp'},
+        right= {
+          'right_sep', '-cool_symbol', 'left_sep', ' ',
+          'right_sep', '- ', '-lsp_name', '- ', 'left_sep',
+          'right_sep_double', '-line_column', 'left_sep_double', ' ',
+        }
       },
-      inactive_sections = {
-        left = { "-mode", " ", "branch" },
-        mid = { "lsp_name" },
-        right = { "file_name", "line_column" },
+
+      defaults={
+        fg = "#986fec",
+        cool_symbol = "  ",
+        left_separator = "",
+        right_separator = "",
+        -- line_column = "%l:%c [%L]",
+        true_colors = true,
+        line_column = "[%l:%c] 並%p%% "
+        -- font_active = "bold"
       },
-      defaults = {
-        left_separator = " ",
-        right_separator = "  ",
-        branch_symbol = " ",
-        mod_symbol = "",
-        line_column = "[%l/%L]",
-        inactive_color = "#80a6f2", --#303030 is the default
-        inactive_bgcolor = "none",
-      },
-      special_table = {
-        lazy = { "Plugins", "💤 " },
-        TelescopePrompt = { "Telescope", "  " },
-        oil = { "Oil", "󰏇 " },
-        lazygit = { "LazyGit", " " },
-      },
+      mode_colors = {
+        n  = "#181a23",
+        i  = "#181a23",
+        ic = "#181a23",
+        c  = "#181a23",
+        v  = "#181a23"       -- etc
+      }
       mode_icons = {
         ["n"] = "NORMAL",
         ["no"] = "NORMAL",

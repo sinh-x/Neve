@@ -1,46 +1,63 @@
 {
-  description = "Neve is a Neovim configuration built with Nixvim, which allows you to use Nix language to manage Neovim plugins/options";
+  description = "Sinh-x-nixvim configuration";
 
   inputs = {
-    nixvim.url = "github:nix-community/nixvim";
-    flake-utils.url = "github:numtide/flake-utils";
+    # NixPkgs (nixos-unstable)
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
+
+    # nixvim nix configuration
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      # url = "git+file:///Users/khaneliman/Documents/github/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
+
+    # Snowfall Lib
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Snowfall Flake
+    snowfall-flake = {
+      url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixvim,
-    flake-utils,
-    ...
-  } @ inputs: let
-    config = import ./config; # import the module directly
+  outputs = inputs: let
+    inherit (inputs) snowfall-lib;
+
+    lib = snowfall-lib.mkLib {
+      inherit inputs;
+      src = ./.;
+
+      snowfall = {
+        meta = {
+          name = "sinh-x-nixvim";
+          title = "sinh-x-nixvim";
+        };
+
+        namespace = "sinh-x-nixvim";
+      };
+    };
   in
-    flake-utils.lib.eachDefaultSystem (system: let
-      nixvimLib = nixvim.lib.${system};
-      pkgs = import nixpkgs {inherit system;};
-      nixvim' = nixvim.legacyPackages.${system};
-      nvim = nixvim'.makeNixvimWithModule {
-        inherit pkgs;
-        module = config;
-        # You can use `extraSpecialArgs` to pass additional arguments to your module files
-        extraSpecialArgs = {
-          inherit self;
-        };
-      };
-    in {
-      checks = {
-        # Run `nix flake check .` to verify that your config is not broken
-        default = nixvimLib.check.mkTestDerivationFromNvim {
-          inherit nvim;
-          name = "Neve";
+    lib.mkFlake {
+      alias = {
+        packages = {
+          default = "sinh-x-nixvim";
+          nvim = "sinh-x-nixvim";
         };
       };
 
-      packages = {
-        # Lets you run `nix run .` to start nixvim
-        default = nvim;
+      channels-config = {
+        allowUnfree = true;
       };
 
-      formatter = pkgs.alejandra;
-    });
+      outputs-builder = channels: {formatter = channels.nixpkgs.nixfmt-rfc-style;};
+    };
 }
