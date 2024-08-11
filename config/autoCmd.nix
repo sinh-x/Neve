@@ -73,25 +73,14 @@
       command = "silent! wa";
     }
     {
-      desc = "Recording Enter";
+      desc = "Macro Enter";
       event = "RecordingEnter";
       pattern = "*";
       callback = {
         __raw = ''
           function()
-            vim.api.nvim_echo({{'Recording @' .. vim.fn.reg_recording(), 'WarningMsg'}}, false, {})
-          end
-        '';
-      };
-    }
-    {
-      desc = "Recording Leave";
-      event = "RecordingLeave";
-      pattern = "*";
-      callback = {
-        __raw = ''
-          function()
-            vim.api.nvim_echo({{'Recorded @' .. vim.fn.reg_recording(), 'WarningMsg'}}, false, {})
+            vim.g.macro_recording = "Recording @" .. vim.fn.reg_recording()
+            vim.api.nvim_echo({{' ' .. vim.g.macro_recording, 'WarningMsg'}}, false, {})
           end
         '';
       };
