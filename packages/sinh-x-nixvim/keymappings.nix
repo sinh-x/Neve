@@ -4,19 +4,22 @@
     # lua
     ''
       function bool2str(bool) return bool and "on" or "off" end
-      function toggle_qf_list()
-        local qf_exists = false
-        for _, win in pairs(fn.getwininfo() or {}) do
-          if win['quickfix'] == 1 then
-            qf_exists = true
-          end
+
+      function PrevOrLastQuickfix()
+        local qf_idx = vim.fn.getqflist({idx = 0}).idx
+        if qf_idx == 1 then
+          vim.cmd('clast')
+        else
+          vim.cmd('cprev')
         end
-        if qf_exists == true then
-          vim.cmd.cclose()
-          return
-        end
-        if not vim.tbl_isempty(vim.fn.getqflist()) then
-          vim.cmd.copen()
+      end
+      function NextOrFirstQuickfix()
+        local qf_list = vim.fn.getqflist()
+        local qf_idx = vim.fn.getqflist({idx = 0}).idx
+        if qf_idx == #qf_list then
+          vim.cmd('cfirst')
+        else
+          vim.cmd('cnext')
         end
       end
     '';
@@ -237,11 +240,29 @@
               };
             };
 
+            "[C" = {
+              action = ":cfirst<CR>";
+              options = {
+                desc = "First quick fix item";
+              };
+            };
             "[c" = {
-              action = ":cprev<CR>";
+              action = ":lua PrevOrLastQuickfix()<CR>";
+              options = {
+                desc = "Prev quick fix item";
+              };
             };
             "]c" = {
-              action = ":cnext<CR>";
+              action = ":lua NextOrFirstQuickfix()<CR>";
+              options = {
+                desc = "Next quick fix item";
+              };
+            };
+            "]C" = {
+              action = ":clast<CR>";
+              options = {
+                desc = "Last quick fix item";
+              };
             };
             "<leader>ud" = {
               action.__raw =
