@@ -1,7 +1,6 @@
 _: {
   opts = {
     clipboard = {
-      register = "unnamedplus";
       provider = {
         wl-copy.enable = false;
         xclip.enable = true;
