@@ -1,204 +1,321 @@
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  inherit (lib) getExe mkIf;
+in
+{
+  extraConfigLuaPre =
+    # lua
+    ''
+      vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" })
+      vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
+      vim.fn.sign_define("DiagnosticSignHint", { text = " 󰌵", texthl = "DiagnosticHint", linehl = "", numhl = "" })
+      vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+    '';
+
   plugins = {
-    lsp-format = {
-      enable = false; # Enable it if you want lsp-format integration for none-ls
-    };
+    lspkind.enable = true;
+    lsp-lines.enable = true;
+    lsp-format.enable = mkIf (!config.plugins.conform-nvim.enable) true;
+
     lsp = {
       enable = true;
-      capabilities = "offsetEncoding =  'utf-16'";
+
+      keymaps = {
+        silent = true;
+        diagnostic = {
+          # Navigate in diagnostics
+          "<leader>lp" = "goto_prev";
+          "<leader>ln" = "goto_next";
+        };
+
+        extra = [
+          {
+            action.__raw =
+              # lua
+              ''
+                function()
+                  vim.lsp.buf.format({
+                    async = true,
+                    range = {
+                      ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+                      ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+                    }
+                  })
+                end
+              '';
+            mode = "v";
+            key = "<leader>lf";
+            options = {
+              desc = "Format selection";
+            };
+          }
+        ];
+
+        lspBuf = {
+          "<leader>la" = "code_action";
+          "<leader>ld" = "definition";
+          "<leader>lf" = "format";
+          "<leader>lD" = "references";
+          "<leader>lt" = "type_definition";
+          "<leader>li" = "implementation";
+          "<leader>lh" = "hover";
+          "<leader>lr" = "rename";
+        };
+      };
+
       servers = {
+        bashls = {
+          enable = true;
+
+          filetypes = [
+            "sh"
+            "bash"
+          ];
+        };
+
+        ccls = {
+          enable = true;
+          filetypes = [
+            "c"
+            "cpp"
+            "objc"
+            "objcpp"
+          ];
+
+          initOptions.compilationDatabaseDirectory = "build";
+        };
+
+        # TODO: see what further configuration might be needed
+        cmake = {
+          enable = true;
+          filetypes = [ "cmake" ];
+        };
+
         clangd = {
           enable = true;
+          filetypes = [
+            "c"
+            "cpp"
+            "objc"
+            "objcpp"
+          ];
         };
-        lua-ls = {
+
+        csharp-ls = {
           enable = true;
-          extraOptions = {
-            settings = {
-              Lua = {
-                completion = {
-                  callSnippet = "Replace";
-                };
-                telemetry = {
-                  enabled = false;
-                };
-                hint = {
-                  enable = true;
-                };
-              };
-            };
-          };
+          filetypes = [ "cs" ];
         };
-        nil-ls = {
+
+        cssls = {
           enable = true;
+          filetypes = [
+            "css"
+            "less"
+            "scss"
+          ];
         };
-        tsserver = {
-          enable = false;
+
+        dockerls = {
+          enable = true;
+          filetypes = [ "dockerfile" ];
+        };
+
+        eslint = {
+          enable = true;
           filetypes = [
             "javascript"
             "javascriptreact"
             "typescript"
             "typescriptreact"
           ];
-          extraOptions = {
-            settings = {
-              javascript = {
-                inlayHints = {
-                  includeInlayEnumMemberValueHints = true;
-                  includeInlayFunctionLikeReturnTypeHints = true;
-                  includeInlayFunctionParameterTypeHints = true;
-                  includeInlayParameterNameHints = "all";
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = true;
-                  includeInlayPropertyDeclarationTypeHints = true;
-                  includeInlayVariableTypeHints = true;
-                };
-              };
-              typescript = {
-                inlayHints = {
-                  includeInlayEnumMemberValueHints = true;
-                  includeInlayFunctionLikeReturnTypeHints = true;
-                  includeInlayFunctionParameterTypeHints = true;
-                  includeInlayParameterNameHints = "all";
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = true;
-                  includeInlayPropertyDeclarationTypeHints = true;
-                  includeInlayVariableTypeHints = true;
-                };
+        };
+
+        fsautocomplete = {
+          enable = true;
+          filetypes = [ "fsharp" ];
+        };
+
+        gdscript = {
+          enable = true;
+          filetypes = [
+            "gd"
+            "gdscript"
+            "gdscript3"
+          ];
+        };
+
+        html = {
+          enable = true;
+          filetypes = [ "html" ];
+        };
+
+        java-language-server = {
+          enable = !config.plugins.nvim-jdtls.enable;
+          filetypes = [ "java" ];
+        };
+
+        jdt-language-server = {
+          inherit (config.plugins.nvim-jdtls) enable;
+          filetypes = [ "java" ];
+        };
+
+        jsonls = {
+          enable = true;
+          filetypes = [
+            "json"
+            "jsonc"
+          ];
+        };
+
+        lua-ls = {
+          enable = true;
+          filetypes = [ "lua" ];
+        };
+
+        marksman = {
+          enable = true;
+          filetypes = [ "markdown" ];
+        };
+
+        nil-ls = {
+          enable = true;
+          filetypes = [ "nix" ];
+          settings = {
+            formatting = {
+              command = [ "${getExe pkgs.nixfmt-rfc-style}" ];
+            };
+            nix = {
+              flake = {
+                autoArchive = true;
               };
             };
           };
         };
-        eslint = {
-          enable = true;
-        };
+
         pyright = {
           enable = true;
-        };
-        ruff-lsp = {
-          enable = true;
-        };
-
-        julials = {
-          enable = true;
-        };
-
-        r-language-server = {
-          enable = true;
-          autostart = true;
-          filetypes = [ "r" ];
+          filetypes = [ "python" ];
         };
 
         rust-analyzer = {
-          enable = true;
+          enable = mkIf (!config.plugins.rustaceanvim.enable) true;
+          filetypes = [ "rust" ];
           installCargo = true;
           installRustc = true;
+
           settings = {
-            checkOnSave = true;
-            check = {
-              command = "clippy";
-            };
-            inlayHints = {
+            diagnostics = {
               enable = true;
-              showParameterNames = true;
-              parameterHintsPrefix = "<- ";
-              otherHintsPrefix = "=> ";
+              # experimental.enable = true;
+              styleLints.enable = true;
             };
+
+            files = {
+              excludeDirs = [
+                ".direnv"
+                "rust/.direnv"
+              ];
+            };
+
+            inlayHints = {
+              bindingModeHints.enable = true;
+              closureStyle = "rust_analyzer";
+              closureReturnTypeHints.enable = "always";
+              discriminantHints.enable = "always";
+              expressionAdjustmentHints.enable = "always";
+              implicitDrops.enable = true;
+              lifetimeElisionHints.enable = "always";
+              rangeExclusiveHints.enable = true;
+            };
+
             procMacro = {
               enable = true;
             };
           };
         };
-        svelte = {
+
+        sqls = {
+          enable = true;
+          filetypes = [ "sql" ];
+        };
+
+        # tailwindcss = {
+        #   enable = true;
+        #   filetypes = [ "css" ];
+        # };
+
+        taplo = {
+          enable = true;
+          filetypes = [ "toml" ];
+        };
+
+        tsserver = {
           enable = true;
           filetypes = [
-            "typescript"
             "javascript"
-            "svelte"
-            "html"
-            "css"
+            "javascriptreact"
+            "typescript"
+            "typescriptreact"
           ];
         };
-      };
-      keymaps = {
-        silent = true;
-        lspBuf = {
-          gd = {
-            action = "definition";
-            desc = "Goto Definition";
-          };
-          gr = {
-            action = "references";
-            desc = "Goto References";
-          };
-          gD = {
-            action = "declaration";
-            desc = "Goto Declaration";
-          };
-          gI = {
-            action = "implementation";
-            desc = "Goto Implementation";
-          };
-          gT = {
-            action = "type_definition";
-            desc = "Type Definition";
-          };
-          K = {
-            action = "hover";
-            desc = "Hover";
-          };
-          "<leader>cw" = {
-            action = "workspace_symbol";
-            desc = "Workspace Symbol";
-          };
-          "<leader>cR" = {
-            action = "rename";
-            desc = "Lsp Rename";
-          };
-          "<leader>ca" = {
-            action = "code_action";
-            desc = "Code Action";
-          };
-          "<C-k>" = {
-            action = "signature_help";
-            desc = "Signature Help";
-          };
-        };
-        diagnostic = {
-          "<leader>cd" = {
-            action = "open_float";
-            desc = "Line Diagnostics";
-          };
-          "[d" = {
-            action = "goto_next";
-            desc = "Next Diagnostic";
-          };
-          "]d" = {
-            action = "goto_prev";
-            desc = "Previous Diagnostic";
-          };
+
+        yamlls = {
+          enable = true;
+          filetypes = [ "yaml" ];
         };
       };
     };
+
+    which-key.settings.spec = [
+      {
+        __unkeyed = "<leader>l";
+        group = "  LSP";
+      }
+      {
+        __unkeyed = "<leader>la";
+        desc = "Code Action";
+      }
+      {
+        __unkeyed = "<leader>ld";
+        desc = "Definition";
+      }
+      {
+        __unkeyed = "<leader>lD";
+        desc = "References";
+      }
+      {
+        __unkeyed = "<leader>lf";
+        desc = "Format";
+      }
+      {
+        __unkeyed = "<leader>lp";
+        desc = "Prev";
+      }
+      {
+        __unkeyed = "<leader>ln";
+        desc = "Next";
+      }
+      {
+        __unkeyed = "<leader>lt";
+        desc = "Type Definition";
+      }
+      {
+        __unkeyed = "<leader>li";
+        desc = "Implementation";
+      }
+      {
+        __unkeyed = "<leader>lh";
+        desc = "Hover";
+      }
+      {
+        __unkeyed = "<leader>lr";
+        desc = "Rename";
+      }
+    ];
   };
-  extraConfigLua = ''
-    local _border = "rounded"
-
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-      vim.lsp.handlers.hover, {
-        border = _border
-      }
-    )
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-      vim.lsp.handlers.signature_help, {
-        border = _border
-      }
-    )
-
-    vim.diagnostic.config{
-      float={border=_border}
-    };
-
-    require('lspconfig.ui.windows').default_options = {
-      border = _border
-    }
-  '';
 }

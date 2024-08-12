@@ -3,7 +3,8 @@ let
   inherit (lib) mkIf;
 in
 {
-  extraConfigLua = # Lua
+  extraConfigLua =
+    # Lua
     ''
       vim.diagnostic.config { update_in_insert = true }
     '';
@@ -11,9 +12,11 @@ in
   plugins.bufferline =
     let
       mouse = {
-        right = # lua
+        right =
+          # lua
           "'vertical sbuffer %d'";
-        close = # lua
+        close =
+          # lua
           ''
             function(bufnum)
               require("mini.bufremove").delete(bufnum)
@@ -30,9 +33,8 @@ in
       closeCommand.__raw = mouse.close;
       closeIcon = "";
       diagnostics = "nvim_lsp";
-      # FIXME: update upstream nixvim
-      # diagnosticsUpdateInInsert = true;
-      diagnosticsIndicator = # lua
+      diagnosticsIndicator =
+        # lua
         ''
           function(count, level, diagnostics_dict, context)
              local s = ""
@@ -64,7 +66,8 @@ in
             };
             priority = 2;
             # icon = "";
-            matcher.__raw = # lua
+            matcher.__raw =
+              # lua
               ''
                 function(buf)
                   return buf.name:match('%test') or buf.name:match('%.spec')
@@ -79,7 +82,8 @@ in
               sp = "#494d64";
             };
             auto_close = false;
-            matcher.__raw = # lua
+            matcher.__raw =
+              # lua
               ''
                 function(buf)
                   return buf.name:match('%.md') or buf.name:match('%.txt')
@@ -155,7 +159,8 @@ in
       maxPrefixLength = 15;
       modifiedIcon = "●";
 
-      numbers.__raw = # lua
+      numbers.__raw =
+        # lua
         ''
           function(opts)
             return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
