@@ -1,621 +1,390 @@
-_: {
-  extraConfigLuaPre = ''
-    function bool2str(bool) return bool and "on" or "off" end
-  '';
+{ helpers, lib, ... }:
+{
+  extraConfigLuaPre =
+    # lua
+    ''
+      function bool2str(bool) return bool and "on" or "off" end
+    '';
 
   globals = {
     mapleader = " ";
     maplocalleader = " ";
   };
 
-  # TODO: Move general mappings to which-key
-  keymaps = [
-    # # Disable arrow keys
-    # {
-    #   mode = ["n" "i"];
-    #   key = "<Up>";
-    #   action = "<Nop>";
-    #   options = {
-    #     silent = true;
-    #     noremap = true;
-    #     desc = "Disable Up arrow key";
-    #   };
-    # }
-    # {
-    #   mode = ["n" "i"];
-    #   key = "<Down>";
-    #   action = "<Nop>";
-    #   options = {
-    #     silent = true;
-    #     noremap = true;
-    #     desc = "Disable Down arrow key";
-    #   };
-    # }
-    # {
-    #   mode = ["n" "i"];
-    #   key = "<Right>";
-    #   action = "<Nop>";
-    #   options = {
-    #     silent = true;
-    #     noremap = true;
-    #     desc = "Disable Right arrow key";
-    #   };
-    # }
-    # {
-    #   mode = ["n" "i"];
-    #   key = "<Left>";
-    #   action = "<Nop>";
-    #   options = {
-    #     silent = true;
-    #     noremap = true;
-    #     desc = "Disable Left arrow key";
-    #   };
-    # }
+  keymaps =
+    let
+      normal =
+        lib.mapAttrsToList
+          (
+            key:
+            { action, ... }@attrs:
+            {
+              mode = "n";
+              inherit action key;
+              options = attrs.options or { };
+            }
+          )
+          {
+            "<Space>" = {
+              action = "<NOP>";
+            };
 
-    {
-      mode = "n";
-      key = "<Esc>";
-      action = "<cmd>nohlsearch<CR>";
-    }
+            # Esc to clear search results
+            "<esc>" = {
+              action = ":noh<CR>";
+            };
 
-    #  Use CTRL+<hjkl> to switch between windows
-    #
-    #  See `:help wincmd` for a list of all window commands
-    {
-      mode = "n";
-      key = "<C-Left>";
-      action = "<C-w><C-h>";
-      options = {
-        desc = "Move focus to the left window";
-      };
-    }
-    {
-      mode = "n";
-      key = "<C-Right>";
-      action = "<C-w><C-l>";
-      options = {
-        desc = "Move focus to the right window";
-      };
-    }
-    {
-      mode = "n";
-      key = "<C-Down>";
-      action = "<C-w><C-j>";
-      options = {
-        desc = "Move focus to the lower window";
-      };
-    }
-    {
-      mode = "n";
-      key = "<C-Up>";
-      action = "<C-w><C-k>";
-      options = {
-        desc = "Move focus to the upper window";
-      };
-    }
+            # Backspace delete in normal
+            "<BS>" = {
+              action = "<BS>x";
+            };
 
-    # General maps
-    {
-      mode = "n";
-      key = "<leader>f";
-      action = "+find/file";
-    }
+            # fix Y behaviour
+            "Y" = {
+              action = "y$";
+            };
 
-    {
-      mode = "n";
-      key = "<leader>s";
-      action = "+search";
-    }
+            # back and fourth between the two most recent files
+            "<C-c>" = {
+              action = ":b#<CR>";
+            };
 
-    {
-      mode = "n";
-      key = "<leader>q";
-      action = "+quit/session";
-    }
+            # navigate to left/right window
+            "<leader>[" = {
+              action = "<C-w>h";
+              options = {
+                desc = "Left window";
+              };
+            };
+            "<leader>]" = {
+              action = "<C-w>l";
+              options = {
+                desc = "Right window";
+              };
+            };
 
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>g";
-      action = "+git";
-    }
+            # navigate quickfix list
+            "<C-k>" = {
+              action = ":cnext<CR>";
+            };
+            "<C-j>" = {
+              action = ":cprev<CR>";
+            };
 
-    {
-      mode = "n";
-      key = "<leader>u";
-      action = "+ui";
-    }
+            # resize with arrows
+            "<C-Up>" = {
+              action = ":resize -2<CR>";
+            };
+            "<C-Down>" = {
+              action = ":resize +2<CR>";
+            };
+            "<C-Left>" = {
+              action = ":vertical resize +2<CR>";
+            };
+            "<C-Right>" = {
+              action = ":vertical resize -2<CR>";
+            };
 
-    {
-      mode = "n";
-      key = "<leader>w";
-      action = "+windows";
-    }
+            # move current line up/down
+            # M = Alt key
+            "<M-k>" = {
+              action = ":move-2<CR>";
+            };
+            "<M-j>" = {
+              action = ":move+<CR>";
+            };
 
-    {
-      mode = "n";
-      key = "<leader><Tab>";
-      action = "+tab";
-    }
+            "<Leader>w" = {
+              action = "<Cmd>w<CR>"; # Action to perform (save the file in this case)
+              options = {
+                desc = "Save";
+              };
+            };
 
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>d";
-      action = "+debug";
-    }
+            "j" = {
+              action = "v:count == 0 ? 'gj' : 'j'";
+              options = {
+                desc = "Move cursor down";
+                expr = true;
+              };
+            };
+            "k" = {
+              action = "v:count == 0 ? 'gk' : 'k'";
+              options = {
+                desc = "Move cursor up";
+                expr = true;
+              };
+            };
+            "<Leader>q" = {
+              action = "<Cmd>confirm q<CR>";
+              options = {
+                desc = "Quit";
+              };
+            };
+            "<Leader>n" = {
+              action = "<Cmd>enew<CR>";
+              options = {
+                desc = "New file";
+              };
+            };
+            "<leader>W" = {
+              action = "<Cmd>w!<CR>";
+              options = {
+                desc = "Force write";
+              };
+            };
+            "<leader>Q" = {
+              action = "<Cmd>q!<CR>";
+              options = {
+                desc = "Force quit";
+              };
+            };
+            "|" = {
+              action = "<Cmd>vsplit<CR>";
+              options = {
+                desc = "Vertical split";
+              };
+            };
+            "\\" = {
+              action = "<Cmd>split<CR>";
+              options = {
+                desc = "Horizontal split";
+              };
+            };
 
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>c";
-      action = "+code";
-    }
+            "<leader>bC" = {
+              action = ":%bd!<CR>";
+              options = {
+                desc = "Close all buffers";
+                silent = true;
+              };
+            };
+            "<leader>b]" = {
+              action = ":bnext<CR>";
+              options = {
+                desc = "Next buffer";
+                silent = true;
+              };
+            };
+            "<TAB>" = {
+              action = ":bnext<CR>";
+              options = {
+                desc = "Next buffer (default)";
+                silent = true;
+              };
+            };
+            "<leader>b[" = {
+              action = ":bprevious<CR>";
+              options = {
+                desc = "Previous buffer";
+                silent = true;
+              };
+            };
+            "<S-TAB>" = {
+              action = ":bprevious<CR>";
+              options = {
+                desc = "Previous buffer";
+                silent = true;
+              };
+            };
 
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>t";
-      action = "+test";
-    }
+            "<leader>ud" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    vim.b.disable_diagnostics = not vim.b.disable_diagnostics
+                    if vim.b.disable_diagnostics then
+                      vim.diagnostic.disable(0)
+                    else
+                      vim.diagnostic.enable(0)
+                    end
+                    vim.notify(string.format("Buffer Diagnostics %s", bool2str(not vim.b.disable_diagnostics), "info"))
+                  end'';
+              options = {
+                desc = "Buffer Diagnostics toggle";
+              };
+            };
 
-    # Tabs
-    {
-      mode = "n";
-      key = "<leader><tab>l";
-      action = "<cmd>tablast<cr>";
-      options = {
-        silent = true;
-        desc = "Last tab";
-      };
-    }
+            "<leader>uD" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    vim.g.disable_diagnostics = not vim.g.disable_diagnostics
+                    if vim.g.disable_diagnostics then
+                      vim.diagnostic.disable()
+                    else
+                      vim.diagnostic.enable()
+                    end
+                    vim.notify(string.format("Global Diagnostics %s", bool2str(not vim.g.disable_diagnostics), "info"))
+                  end'';
+              options = {
+                desc = "Global Diagnostics toggle";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader><tab>f";
-      action = "<cmd>tabfirst<cr>";
-      options = {
-        silent = true;
-        desc = "First Tab";
-      };
-    }
+            "<leader>uf" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    -- vim.g.disable_autoformat = not vim.g.disable_autoformat
+                    vim.cmd('FormatToggle!')
+                    vim.notify(string.format("Buffer Autoformatting %s", bool2str(not vim.b[0].disable_autoformat), "info"))
+                  end'';
+              options = {
+                desc = "Buffer Autoformatting toggle";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader><tab><tab>";
-      action = "<cmd>tabnew<cr>";
-      options = {
-        silent = true;
-        desc = "New Tab";
-      };
-    }
+            "<leader>uF" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    -- vim.g.disable_autoformat = not vim.g.disable_autoformat
+                    vim.cmd('FormatToggle')
+                    vim.notify(string.format("Global Autoformatting %s", bool2str(not vim.g.disable_autoformat), "info"))
+                  end'';
+              options = {
+                desc = "Global Autoformatting toggle";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader><tab>]";
-      action = "<cmd>tabnext<cr>";
-      options = {
-        silent = true;
-        desc = "Next Tab";
-      };
-    }
+            "<leader>uS" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    if vim.g.spell_enabled then vim.cmd('setlocal nospell') end
+                    if not vim.g.spell_enabled then vim.cmd('setlocal spell') end
+                    vim.g.spell_enabled = not vim.g.spell_enabled
+                    vim.notify(string.format("Spell %s", bool2str(vim.g.spell_enabled), "info"))
+                  end'';
+              options = {
+                desc = "Spell toggle";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader><tab>d";
-      action = "<cmd>tabclose<cr>";
-      options = {
-        silent = true;
-        desc = "Close tab";
-      };
-    }
+            "<leader>uw" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    vim.wo.wrap = not vim.wo.wrap
+                    vim.notify(string.format("Wrap %s", bool2str(vim.wo.wrap), "info"))
+                  end'';
+              options = {
+                desc = "Word Wrap toggle";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader><tab>[";
-      action = "<cmd>tabprevious<cr>";
-      options = {
-        silent = true;
-        desc = "Previous Tab";
-      };
-    }
+            "<leader>uh" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    local curr_foldcolumn = vim.wo.foldcolumn
+                    if curr_foldcolumn ~= "0" then vim.g.last_active_foldcolumn = curr_foldcolumn end
+                    vim.wo.foldcolumn = curr_foldcolumn == "0" and (vim.g.last_active_foldcolumn or "1") or "0"
+                    vim.notify(string.format("Fold Column %s", bool2str(vim.wo.foldcolumn), "info"))
+                  end'';
+              options = {
+                desc = "Fold Column toggle";
+              };
+            };
 
-    # Windows
-    {
-      mode = "n";
-      key = "<leader>ww";
-      action = "<C-W>p";
-      options = {
-        silent = true;
-        desc = "Other window";
-      };
-    }
+            "<leader>uc" = {
+              action.__raw =
+                # lua
+                ''
+                  function ()
+                    vim.g.cmp_enabled = not vim.g.cmp_enabled
+                    vim.notify(string.format("Completions %s", bool2str(vim.g.cmp_enabled), "info"))
+                  end'';
+              options = {
+                desc = "Completions toggle";
+              };
+            };
+          };
+      visual =
+        lib.mapAttrsToList
+          (
+            key:
+            { action, ... }@attrs:
+            {
+              mode = "v";
+              inherit action key;
+              options = attrs.options or { };
+            }
+          )
+          {
+            # Better indenting
+            "<S-Tab>" = {
+              action = "<gv";
+              options = {
+                desc = "Unindent line";
+              };
+            };
+            "<" = {
+              action = "<gv";
+              options = {
+                desc = "Unindent line";
+              };
+            };
+            "<Tab>" = {
+              action = ">gv";
+              options = {
+                desc = "Indent line";
+              };
+            };
+            ">" = {
+              action = ">gv";
+              options = {
+                desc = "Indent line";
+              };
+            };
 
-    {
-      mode = "n";
-      key = "<leader>wd";
-      action = "<C-W>c";
-      options = {
-        silent = true;
-        desc = "Delete window";
-      };
-    }
+            # Move selected line/block in visual mode
+            "K" = {
+              action = ":m '<-2<CR>gv=gv";
+            };
+            "J" = {
+              action = ":m '>+1<CR>gv=gv";
+            };
 
-    {
-      mode = "n";
-      key = "<leader>w-";
-      action = "<C-W>s";
-      options = {
-        silent = true;
-        desc = "Split window below";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>w|";
-      action = "<C-W>v";
-      options = {
-        silent = true;
-        desc = "Split window right";
-      };
-    }
-
-    # {
-    #   mode = "n";
-    #   key = "<leader>-";
-    #   action = "<C-W>s";
-    #   options = {
-    #     silent = true;
-    #     desc = "Split window below";
-    #   };
-    # }
-
-    # {
-    #   mode = "n";
-    #   key = "<leader>|";
-    #   action = "<C-W>v";
-    #   options = {
-    #     silent = true;
-    #     desc = "Split window right";
-    #   };
-    # }
-
-    {
-      mode = "n";
-      key = "<C-s>";
-      action = "<cmd>w<cr><esc>";
-      options = {
-        silent = true;
-        desc = "Save file";
-      };
-    }
-
-    {
-      mode = "i";
-      key = "<C-s>";
-      action = "<cmd>w<cr><esc>";
-      options = {
-        silent = true;
-        desc = "Save file";
-      };
-    }
-
-    # Quit/Session
-    {
-      mode = "n";
-      key = "<leader>qq";
-      action = "<cmd>quitall<cr><esc>";
-      options = {
-        silent = true;
-        desc = "Quit all";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>qs";
-      action = ":lua require('persistence').load()<cr>";
-      options = {
-        silent = true;
-        desc = "Restore session";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>ql";
-      action = "<cmd>lua require('persistence').load({ last = true })<cr>";
-      options = {
-        silent = true;
-        desc = "Restore last session";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>qd";
-      action = "<cmd>lua require('persistence').stop()<cr>";
-      options = {
-        silent = true;
-        desc = "Don't save current session";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>ul";
-      action = ":lua ToggleLineNumber()<cr>";
-      options = {
-        silent = true;
-        desc = "Toggle Line Numbers";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>uL";
-      action = ":lua ToggleRelativeLineNumber()<cr>";
-      options = {
-        silent = true;
-        desc = "Toggle Relative Line Numbers";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<leader>uw";
-      action = ":lua ToggleWrap()<cr>";
-      options = {
-        silent = true;
-        desc = "Toggle Line Wrap";
-      };
-    }
-
-    {
-      mode = "v";
-      key = "J";
-      action = ":m '>+1<CR>gv=gv";
-      options = {
-        silent = true;
-        desc = "Move up when line is highlighted";
-      };
-    }
-
-    {
-      mode = "v";
-      key = "K";
-      action = ":m '<-2<CR>gv=gv";
-      options = {
-        silent = true;
-        desc = "Move down when line is highlighted";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "J";
-      action = "mzJ`z";
-      options = {
-        silent = true;
-        desc = "Allow cursor to stay in the same place after appeding to current line";
-      };
-    }
-
-    {
-      mode = "v";
-      key = "<";
-      action = "<gv";
-      options = {
-        silent = true;
-        desc = "Indent while remaining in visual mode.";
-      };
-    }
-
-    {
-      mode = "v";
-      key = ">";
-      action = ">gv";
-      options = {
-        silent = true;
-        desc = "Indent while remaining in visual mode.";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<C-d>";
-      action = "<C-d>zz";
-      options = {
-        silent = true;
-        desc = "Allow <C-d> and <C-u> to keep the cursor in the middle";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<C-u>";
-      action = "<C-u>zz";
-      options = {
-        desc = "Allow C-d and C-u to keep the cursor in the middle";
-      };
-    }
-
-    # Remap for dealing with word wrap and adding jumps to the jumplist.
-    {
-      mode = "n";
-      key = "j";
-      action.__raw = "
-        [[(v:count > 1 ? 'm`' . v:count : 'g') . 'j']]
-      ";
-      options = {
-        expr = true;
-        desc = "Remap for dealing with word wrap and adding jumps to the jumplist.";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "k";
-      action.__raw = "
-        [[(v:count > 1 ? 'm`' . v:count : 'g') . 'k']]
-      ";
-      options = {
-        expr = true;
-        desc = "Remap for dealing with word wrap and adding jumps to the jumplist.";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "n";
-      action = "nzzzv";
-      options = {
-        desc = "Allow search terms to stay in the middle";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "N";
-      action = "Nzzzv";
-      options = {
-        desc = "Allow search terms to stay in the middle";
-      };
-    }
-
-    # Paste stuff without saving the deleted word into the buffer
-    {
-      mode = "x";
-      key = "<leader>p";
-      action = "\"_dP";
-      options = {
-        desc = "Deletes to void register and paste over";
-      };
-    }
-
-    # Copy stuff to system clipboard with <leader> + y or just y to have it just in vim
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>y";
-      action = "\"+y";
-      options = {
-        desc = "Copy to system clipboard";
-      };
-    }
-
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>Y";
-      action = "\"+Y";
-      options = {
-        desc = "Copy to system clipboard";
-      };
-    }
-
-    # Delete to void register
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<leader>D";
-      action = "\"_d";
-      options = {
-        desc = "Delete to void register";
-      };
-    }
-
-    # <C-c> instead of pressing esc just because
-    {
-      mode = "i";
-      key = "<C-c>";
-      action = "<Esc>";
-    }
-
-    {
-      mode = "n";
-      key = "<C-f>";
-      action = "!tmux new tmux-sessionizer<CR>";
-      options = {
-        desc = "Switch between projects";
-      };
-    }
-    {
-      mode = "n";
-      key = "<leader>aa";
-      action = "ggvG$<cmd>CopilotChatToggle<cr>";
-      options = {
-        desc = "CopilotChat Toggle";
-      };
-    }
-    {
-      mode = "v";
-      key = "<leader>aa";
-      action = "<cmd>CopilotChatToggle<cr>";
-      options = {
-        desc = "CopilotChat Toggle";
-      };
-    }
-  ];
-  extraConfigLua = ''
-    local notify = require("notify")
-
-    local function show_notification(message, level)
-      notify(message, level, { title = "conform.nvim" })
-    end
-
-    function ToggleLineNumber()
-    if vim.wo.number then
-      vim.wo.number = false
-      show_notification("Line numbers disabled", "info")
-    else
-      vim.wo.number = true
-        vim.wo.relativenumber = false
-        show_notification("Line numbers enabled", "info")
-        end
-        end
-
-        function ToggleRelativeLineNumber()
-        if vim.wo.relativenumber then
-          vim.wo.relativenumber = false
-          show_notification("Relative line numbers disabled", "info")
-        else
-          vim.wo.relativenumber = true
-            vim.wo.number = false
-            show_notification("Relative line numbers enabled", "info")
-          end
-        end
-
-        function ToggleWrap()
-          if vim.wo.wrap then
-            vim.wo.wrap = false
-            show_notification("Wrap disabled", "info")
-          else
-            vim.wo.wrap = true
-              vim.wo.number = false
-              show_notification("Wrap enabled", "info")
-          end
-        end
-
-       if vim.lsp.inlay_hint then
-         vim.keymap.set('n', '<leader>uh', function()
-           vim.lsp.inlay_hint(0, nil)
-         end, { desc = 'Toggle Inlay Hints' })
-       end
-  '';
+            # Backspace delete in visual
+            "<BS>" = {
+              action = "x";
+            };
+          };
+      insert =
+        lib.mapAttrsToList
+          (
+            key:
+            { action, ... }@attrs:
+            {
+              mode = "i";
+              inherit action key;
+              options = attrs.options or { };
+            }
+          )
+          {
+            # Move selected line/block in insert mode
+            "<C-k>" = {
+              action = "<C-o>gk";
+            };
+            "<C-h>" = {
+              action = "<Left>";
+            };
+            "<C-l>" = {
+              action = "<Right>";
+            };
+            "<C-j>" = {
+              action = "<C-o>gj";
+            };
+          };
+    in
+    helpers.keymaps.mkKeymaps { options.silent = true; } (normal ++ visual ++ insert);
 }
