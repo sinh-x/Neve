@@ -85,5 +85,20 @@ _: {
         '';
       };
     }
+    {
+      desc = "Macro Leave";
+      event = "RecordingLeave";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+            local msg = "Finished recording @" .. vim.fn.reg_recording()
+            vim.g.macro_recording = nil
+            vim.api.nvim_echo({{' ' .. msg, 'WarningMsg'}}, false, {})
+            vim.notify(msg, vim.log.levels.INFO)
+          end
+        '';
+      };
+    }
   ];
 }
