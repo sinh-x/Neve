@@ -1,25 +1,40 @@
+{ config, lib, ... }:
 {
-  config,
-  pkgs,
-  host,
-  user,
-  ...
-}: {
-  plugins.undotree = {
-    enable = true;
-    settings = {
-      autoOpenDiff = true;
-      focusOnToggle = true;
+
+  plugins = {
+    undotree = {
+      enable = true;
+
+      settings = {
+        CursorLine = true;
+        DiffAutoOpen = true;
+        DiffCommand = "diff";
+        DiffpanelHeight = 10;
+        HelpLine = true;
+        HighlightChangedText = true;
+        HighlightChangedWithSign = true;
+        HighlightSyntaxAdd = "DiffAdd";
+        HighlightSyntaxChange = "DiffChange";
+        HighlightSyntaxDel = "DiffDelete";
+        RelativeTimestamp = true;
+        SetFocusWhenToggle = true;
+        ShortIndicators = false;
+        TreeNodeShape = "*";
+        TreeReturnShape = "\\";
+        TreeSplitShape = "/";
+        TreeVertShape = "|";
+      };
     };
   };
-  keymaps = [
+
+  keymaps = lib.mkIf config.plugins.undotree.enable [
     {
       mode = "n";
-      key = "<leader>ut";
-      action = "<cmd>UndotreeToggle<CR>";
+      key = "<leader>uu";
+      action = ":UndotreeToggle<CR>";
       options = {
+        desc = "Undotree toggle";
         silent = true;
-        desc = "Undotree";
       };
     }
   ];

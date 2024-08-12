@@ -2,7 +2,7 @@ _: {
 
   plugins = {
     mini = {
-      enable = true;
+      enable = false;
 
       modules = {
         starter = {

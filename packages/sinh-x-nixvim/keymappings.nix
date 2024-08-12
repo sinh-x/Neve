@@ -148,12 +148,6 @@
                 desc = "New file";
               };
             };
-            "<leader>W" = {
-              action = "<Cmd>w!<CR>";
-              options = {
-                desc = "Force write";
-              };
-            };
             "<leader>qQ" = {
               action = "<Cmd>q!<CR>";
               options = {

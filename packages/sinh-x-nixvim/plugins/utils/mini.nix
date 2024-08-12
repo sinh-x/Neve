@@ -2,7 +2,7 @@ _: {
 
   plugins = {
     mini = {
-      enable = false;
+      enable = true;
 
       modules = {
         ai = { };
