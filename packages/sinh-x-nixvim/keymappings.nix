@@ -1,12 +1,12 @@
 _: {
-  extraConfigLuaPre =
-    # lua
-    ''
-      function bool2str(bool) return bool and "on" or "off" end
-    '';
+  extraConfigLuaPre = ''
+    function bool2str(bool) return bool and "on" or "off" end
+  '';
 
-  globals.mapleader = " ";
-  globals.maplocalleader = "\\";
+  globals = {
+    mapleader = " ";
+    maplocalleader = " ";
+  };
 
   # TODO: Move general mappings to which-key
   keymaps = [
