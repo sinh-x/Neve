@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   extraPlugins = with pkgs.vimUtils; [
     (buildVimPlugin {
       pname = "obsidian-bridge.nvim";
@@ -18,6 +19,5 @@
     })
   '';
 
-  keymaps = [
-  ];
+  keymaps = [ ];
 }
