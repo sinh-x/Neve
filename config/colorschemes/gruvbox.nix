@@ -1,7 +1,0 @@
-{
-  colorschemes = {
-    tokyonight = {
-      enable = false;
-    };
-  };
-}

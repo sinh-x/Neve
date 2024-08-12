@@ -106,6 +106,10 @@ in
             priority = 750;
           }
           {
+            name = "copilot";
+            priority = 350;
+          }
+          {
             name = "codeium";
             priority = 300;
           }
@@ -219,24 +223,6 @@ in
 
       local cmp = require'cmp'
 
-        cmp.setup({
-          sources = cmp.config.sources({
-            { name = 'path' },
-            { name = 'nvim_lsp' },
-            { name = 'luasnip' },
-            { name = 'buffer' },
-          }, {
-            { name = 'copilot' },
-          }),
-        })
-
-        -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-        cmp.setup.cmdline({'/', "?" }, {
-          sources = {
-            { name = 'buffer' }
-          }
-        })
-
       -- Set configuration for specific filetype.
         cmp.setup.filetype('gitcommit', {
           sources = cmp.config.sources({
@@ -249,6 +235,9 @@ in
       -- Setup cmp for R
       cmp.setup.filetype('r', {
         sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp_signature_help' },
+          { name = 'nvim_lsp_document_symbol' },
           {
             name = 'path',
             priority = 1000,
@@ -260,12 +249,11 @@ in
               end,
             },
           },
-          { name = 'cmp_r' },
-          { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'luasnip' },
         }, {
           { name = 'copilot' },
+          { name = 'codeium' },
         })
       })
 
