@@ -12,15 +12,6 @@
     }
     {
       mode = "n";
-      key = "<leader>E";
-      action = "<cmd>Neotree toggle<CR>";
-      options = {
-        silent = true;
-        desc = "Explorer NeoTree (cwd)";
-      };
-    }
-    {
-      mode = "n";
       key = "<leader>be";
       action = ":Neotree buffers<CR>";
       options = {
