@@ -22,10 +22,10 @@ _: {
         incremental_selection = {
           enable = true;
           keymaps = {
-            init_selection = "gnn";
-            node_incremental = "grn";
+            init_selection = "<c-space>";
+            node_incremental = "<c-space>";
             scope_incremental = "grc";
-            node_decremental = "grm";
+            node_decremental = "<bs>";
           };
         };
 

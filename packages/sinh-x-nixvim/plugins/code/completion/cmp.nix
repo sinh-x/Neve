@@ -94,68 +94,68 @@
     };
   };
   extraConfigLua = ''
-      luasnip = require("luasnip")
-      kind_icons = {
-        Text = "󰊄",
-        Method = "",
-        Function = "󰡱",
-        Constructor = "",
-        Field = "",
-        Variable = "󱀍",
-        Class = "",
-        Interface = "",
-        Module = "󰕳",
-        Property = "",
-        Unit = "",
-        Value = "",
-        Enum = "",
-        Keyword = "",
-        Snippet = "",
-        Color = "",
-        File = "",
-        Reference = "",
-        Folder = "",
-        EnumMember = "",
-        Constant = "",
-        Struct = "",
-        Event = "",
-        Operator = "",
-        TypeParameter = "",
-      } 
+        luasnip = require("luasnip")
+        kind_icons = {
+          Text = "󰊄",
+          Method = "",
+          Function = "󰡱",
+          Constructor = "",
+          Field = "",
+          Variable = "󱀍",
+          Class = "",
+          Interface = "",
+          Module = "󰕳",
+          Property = "",
+          Unit = "",
+          Value = "",
+          Enum = "",
+          Keyword = "",
+          Snippet = "",
+          Color = "",
+          File = "",
+          Reference = "",
+          Folder = "",
+          EnumMember = "",
+          Constant = "",
+          Struct = "",
+          Event = "",
+          Operator = "",
+          TypeParameter = "",
+      }
 
-    local cmp = require'cmp'
+      local cmp = require'cmp'
 
-      cmp.setup({
-        sources = cmp.config.sources({
-          { name = 'path' },
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-        }, {
-          { name = 'copilot' },
-        }),
-      })
-
-      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline({'/', "?" }, {
-        sources = {
-          { name = 'buffer' }
-        }
-      })
-
-    -- Set configuration for specific filetype.
-      cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources({
-          { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+        cmp.setup({
+          sources = cmp.config.sources({
+            { name = 'path' },
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+            { name = 'buffer' },
           }, {
-          { name = 'buffer' },
-          })
+            { name = 'copilot' },
+          }),
         })
 
-    -- Setup cmp for R
+        -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline({'/', "?" }, {
+          sources = {
+            { name = 'buffer' }
+          }
+        })
+
+      -- Set configuration for specific filetype.
+        cmp.setup.filetype('gitcommit', {
+          sources = cmp.config.sources({
+            { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+            }, {
+            { name = 'buffer' },
+            })
+          })
+
+      -- Setup cmp for R
       cmp.setup.filetype('r', {
         sources = cmp.config.sources({
-          { 
+          {
             name = 'path',
             priority = 1000,
             option = {
@@ -174,10 +174,10 @@
           { name = 'copilot' },
         })
       })
-      
+
       cmp.setup.filetype('yaml', {
         sources = cmp.config.sources({
-          { 
+          {
             name = 'path',
             priority = 1000,
             option = {
@@ -203,5 +203,6 @@
           }, {
           { name = 'cmdline' }
           }),
-        })  '';
+        }) 
+  '';
 }

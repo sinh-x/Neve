@@ -34,11 +34,6 @@
               action = ":noh<CR>";
             };
 
-            # Backspace delete in normal
-            "<BS>" = {
-              action = "<BS>x";
-            };
-
             # fix Y behaviour
             "Y" = {
               action = "y$";
