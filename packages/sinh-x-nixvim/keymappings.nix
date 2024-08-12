@@ -49,6 +49,14 @@
               action = ":b#<CR>";
             };
 
+            "<C-s>" = {
+              action = "<cmd>w<cr>";
+              options = {
+                silent = true;
+                desc = "Save file";
+              };
+            };
+
             # navigate to left/right window
             "<leader>[" = {
               action = "<C-w>h";
@@ -371,6 +379,13 @@
             }
           )
           {
+            "<C-s>" = {
+              action = "<cmd>w<cr><esc>";
+              options = {
+                silent = true;
+                desc = "Save file";
+              };
+            };
             # Move selected line/block in insert mode
             "<C-k>" = {
               action = "<C-o>gk";
