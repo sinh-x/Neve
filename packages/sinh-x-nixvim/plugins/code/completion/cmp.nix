@@ -16,62 +16,42 @@ let
     '';
 in
 {
+
+  opts.completeopt = [
+    "menu"
+    "menuone"
+    "noselect"
+  ];
+
   plugins = {
-    cmp-nvim-lsp = {
-      enable = true;
-    }; # lsp
-    cmp-buffer = {
-      enable = true;
-    };
-    copilot-cmp = {
-      enable = true;
-    }; # copilot suggestions
-    cmp-fish = {
-      enable = true;
-    };
-    cmp-git = {
-      enable = true;
-    }; # git
-    cmp-path = {
-      enable = true;
-    }; # file system paths
-    cmp_luasnip = {
-      enable = true;
-    }; # snippets
-    cmp-cmdline = {
-      enable = false;
-    }; # autocomplete for cmdline
     cmp = {
       enable = true;
-      autoEnableSources = false;
-      settings = {
-        experimental = {
-          ghost_text = true;
-        };
-      };
+      autoEnableSources = true;
+
       settings = {
         mapping = {
-          __raw = ''
-            cmp.mapping.preset.insert({
-            ['<C-j>'] = cmp.mapping.select_next_item(),
-            ['<C-k>'] = cmp.mapping.select_prev_item(),
-            ['<C-e>'] = cmp.mapping.abort(),
-
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-
-             ['<C-f>'] = cmp.mapping.scroll_docs(4),
-
-             ['<C-Space>'] = cmp.mapping.complete(),
-
-             ['<CR>'] = cmp.mapping.confirm({ select = true }),
-
-             ['<S-CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-            })
-          '';
+          "<C-b>" = # lua
+            "cmp.mapping.scroll_docs(-4)";
+          "<C-f>" = # lua
+            "cmp.mapping.scroll_docs(4)";
+          "<C-e>" = # lua
+            "cmp.mapping.complete()";
+          "<Esc>" = # lua
+            "cmp.mapping.close()";
+          "<Down>" = # lua
+            "cmp.mapping(cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}), {'i', 's'})";
+          "<Up>" = # lua
+            "cmp.mapping(cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}), {'i', 's'})";
+          "<CR>" = # lua
+            "cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace })";
         };
-        snippet = {
-          expand = "function(args) require('luasnip').lsp_expand(args.body) end";
-        };
+
+        preselect = # lua
+          "cmp.PreselectMode.None";
+
+        snippet.expand = # lua
+          "function(args) require('luasnip').lsp_expand(args.body) end";
+
         sources = [
           {
             name = "nvim_lsp";
@@ -106,11 +86,11 @@ in
             priority = 750;
           }
           {
-            name = "copilot";
-            priority = 350;
+            name = "codeium";
+            priority = 300;
           }
           {
-            name = "codeium";
+            name = "copilot";
             priority = 300;
           }
           {
@@ -141,19 +121,7 @@ in
             priority = 250;
           }
           {
-            name = "neorg";
-            priority = 250;
-          }
-          {
             name = "npm";
-            priority = 250;
-          }
-          {
-            name = "tmux";
-            priority = 250;
-          }
-          {
-            name = "zsh";
             priority = 250;
           }
           {
@@ -166,128 +134,94 @@ in
           }
         ];
 
-        performance = {
-          debounce = 60;
-          fetching_timeout = 200;
-          max_view_entries = 30;
-        };
         window = {
-          completion = {
-            border = "rounded";
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None";
-          };
-          documentation = {
-            border = "rounded";
-          };
+          completion.__raw = # lua
+            ''cmp.config.window.bordered()'';
+          documentation.__raw = # lua
+            ''cmp.config.window.bordered()'';
         };
-        formatting = {
-          fields = [
-            "kind"
-            "abbr"
-            "menu"
-          ];
-          expandable_indicator = true;
+      };
+    };
+
+    friendly-snippets.enable = true;
+    luasnip.enable = true;
+
+    lspkind = {
+      enable = true;
+
+      cmp = {
+        enable = true;
+
+        menu = {
+          buffer = "";
+          calc = "";
+          cmdline = "";
+          codeium = "󱜙";
+          emoji = "󰞅";
+          git = "";
+          luasnip = "󰩫";
+          neorg = "";
+          nvim_lsp = "";
+          nvim_lua = "";
+          path = "";
+          spell = "";
+          treesitter = "󰔱";
         };
       };
     };
   };
+
   extraConfigLua = ''
-        luasnip = require("luasnip")
-        kind_icons = {
-          Text = "󰊄",
-          Method = "",
-          Function = "󰡱",
-          Constructor = "",
-          Field = "",
-          Variable = "󱀍",
-          Class = "",
-          Interface = "",
-          Module = "󰕳",
-          Property = "",
-          Unit = "",
-          Value = "",
-          Enum = "",
-          Keyword = "",
-          Snippet = "",
-          Color = "",
-          File = "",
-          Reference = "",
-          Folder = "",
-          EnumMember = "",
-          Constant = "",
-          Struct = "",
-          Event = "",
-          Operator = "",
-          TypeParameter = "",
-      }
 
-      local cmp = require'cmp'
+    local cmp = require'cmp'
 
-      -- Set configuration for specific filetype.
-        cmp.setup.filetype('gitcommit', {
-          sources = cmp.config.sources({
-            { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-            }, {
-            { name = 'buffer' },
-            })
-          })
-
-      -- Setup cmp for R
-      cmp.setup.filetype('r', {
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'nvim_lsp_signature_help' },
-          { name = 'nvim_lsp_document_symbol' },
-          {
-            name = 'path',
-            priority = 1000,
-            option = {
-              trailing_slash = false,
-              label_trailing_slash = true,
-              get_cwd = function()
-                return vim.fn.getcwd()
-              end,
-            },
+    -- Setup cmp for R
+    cmp.setup.filetype('r', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        {
+          name = 'path',
+          priority = 1000,
+          option = {
+            trailing_slash = false,
+            label_trailing_slash = true,
+            get_cwd = function()
+              return vim.fn.getcwd()
+            end,
           },
-          { name = 'buffer' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'copilot' },
-          { name = 'codeium' },
-        })
+        },
+        { name = 'buffer' },
+        { name = 'luasnip' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
       })
+    })
 
-      cmp.setup.filetype('yaml', {
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'nvim_lsp_signature_help' },
-          { name = 'nvim_lsp_document_symbol' },
-          {
-            name = 'path',
-            priority = 1000,
-            option = {
-              trailing_slash = false,
-              label_trailing_slash = true,
-              get_cwd = function()
-                return vim.fn.getcwd()
-              end,
-            },
+    cmp.setup.filetype('yaml', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        {
+          name = 'path',
+          priority = 1000,
+          option = {
+            trailing_slash = false,
+            label_trailing_slash = true,
+            get_cwd = function()
+              return vim.fn.getcwd()
+            end,
           },
-          { name = 'buffer' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'copilot' },
-          { name = 'codeium' },
-        })
+        },
+        { name = 'buffer' },
+        { name = 'luasnip' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
       })
-
-    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline(':', {
-        sources = cmp.config.sources({
-          { name = 'path' }
-          }, {
-          { name = 'cmdline' }
-          }),
-        })
+    })
   '';
 }
