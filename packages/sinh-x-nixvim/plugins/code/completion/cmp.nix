@@ -1,3 +1,20 @@
+_:
+let
+  get_bufnrs.__raw = # lua
+    ''
+      function()
+        local buf_size_limit = 1024 * 1024 -- 1MB size limit
+        local bufs = vim.api.nvim_list_bufs()
+        local valid_bufs = {}
+        for _, buf in ipairs(bufs) do
+          if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf)) < buf_size_limit then
+            table.insert(valid_bufs, buf)
+          end
+        end
+        return valid_bufs
+      end
+    '';
+in
 {
   plugins = {
     cmp-nvim-lsp = {
@@ -55,19 +72,96 @@
         snippet = {
           expand = "function(args) require('luasnip').lsp_expand(args.body) end";
         };
-        sources = {
-          __raw = ''
-            cmp.config.sources({
-              {name = 'nvim_lsp'},
-              {name = 'copilot'},
-              {name = 'path'},
-              {name = 'luasnip'},
-              {name = 'cmdline'},
-              }, {
-            {name = 'buffer'},
-            })
-          '';
-        };
+        sources = [
+          {
+            name = "nvim_lsp";
+            priority = 1000;
+            option = {
+              inherit get_bufnrs;
+            };
+          }
+          {
+            name = "nvim_lsp_signature_help";
+            priority = 1000;
+            option = {
+              inherit get_bufnrs;
+            };
+          }
+          {
+            name = "nvim_lsp_document_symbol";
+            priority = 1000;
+            option = {
+              inherit get_bufnrs;
+            };
+          }
+          {
+            name = "treesitter";
+            priority = 850;
+            option = {
+              inherit get_bufnrs;
+            };
+          }
+          {
+            name = "luasnip";
+            priority = 750;
+          }
+          {
+            name = "codeium";
+            priority = 300;
+          }
+          {
+            name = "buffer";
+            priority = 500;
+            option = {
+              inherit get_bufnrs;
+            };
+          }
+          {
+            name = "path";
+            priority = 300;
+          }
+          {
+            name = "cmdline";
+            priority = 300;
+          }
+          {
+            name = "spell";
+            priority = 300;
+          }
+          {
+            name = "fish";
+            priority = 250;
+          }
+          {
+            name = "git";
+            priority = 250;
+          }
+          {
+            name = "neorg";
+            priority = 250;
+          }
+          {
+            name = "npm";
+            priority = 250;
+          }
+          {
+            name = "tmux";
+            priority = 250;
+          }
+          {
+            name = "zsh";
+            priority = 250;
+          }
+          {
+            name = "calc";
+            priority = 150;
+          }
+          {
+            name = "emoji";
+            priority = 100;
+          }
+        ];
+
         performance = {
           debounce = 60;
           fetching_timeout = 200;
@@ -177,6 +271,9 @@
 
       cmp.setup.filetype('yaml', {
         sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp_signature_help' },
+          { name = 'nvim_lsp_document_symbol' },
           {
             name = 'path',
             priority = 1000,
@@ -188,11 +285,11 @@
               end,
             },
           },
-          { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'luasnip' },
         }, {
           { name = 'copilot' },
+          { name = 'codeium' },
         })
       })
 
@@ -203,6 +300,6 @@
           }, {
           { name = 'cmdline' }
           }),
-        }) 
+        })
   '';
 }
