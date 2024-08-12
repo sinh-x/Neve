@@ -32,6 +32,10 @@ _: {
           __unkeyed = "<leader>u";
           group = " UI/UX";
         }
+        {
+          __unkeyed = "<leader>q";
+          group = "Quit";
+        }
       ];
 
       replace = {

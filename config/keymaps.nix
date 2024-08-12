@@ -1,4 +1,4 @@
-# Thanks for the keybinds primeagen and folke!
+# Thanks for the keybinds pr
 {
   globals.mapleader = " ";
   globals.maplocalleader = "\\";
@@ -109,7 +109,10 @@
     }
 
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>g";
       action = "+git";
     }
@@ -133,19 +136,28 @@
     }
 
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>d";
       action = "+debug";
     }
 
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>c";
       action = "+code";
     }
 
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>t";
       action = "+test";
     }
@@ -487,7 +499,10 @@
 
     # Copy stuff to system clipboard with <leader> + y or just y to have it just in vim
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>y";
       action = "\"+y";
       options = {
@@ -496,7 +511,10 @@
     }
 
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>Y";
       action = "\"+Y";
       options = {
@@ -506,7 +524,10 @@
 
     # Delete to void register
     {
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>D";
       action = "\"_d";
       options = {

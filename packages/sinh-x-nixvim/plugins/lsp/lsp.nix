@@ -202,6 +202,23 @@ in
           filetypes = [ "python" ];
         };
 
+        r-language-server = {
+          enable = true;
+          autostart = true;
+          filetypes = [ "r" ];
+        };
+
+        svelte = {
+          enable = true;
+          filetypes = [
+            "typescript"
+            "javascript"
+            "svelte"
+            "html"
+            "css"
+          ];
+        };
+
         rust-analyzer = {
           enable = mkIf (!config.plugins.rustaceanvim.enable) true;
           filetypes = [ "rust" ];

@@ -58,14 +58,26 @@
             };
 
             # navigate to left/right window
-            "<leader>[" = {
+            "<C-Left>" = {
               action = "<C-w>h";
               options = {
                 desc = "Left window";
               };
             };
-            "<leader>]" = {
+            "<C-Right>" = {
               action = "<C-w>l";
+              options = {
+                desc = "Right window";
+              };
+            };
+            "<C-Up>" = {
+              action = "<C-w>k";
+              options = {
+                desc = "Right window";
+              };
+            };
+            "<C-Down>" = {
+              action = "<C-w><C-j>";
               options = {
                 desc = "Right window";
               };
@@ -80,16 +92,16 @@
             };
 
             # resize with arrows
-            "<C-Up>" = {
+            "<M-Up>" = {
               action = ":resize -2<CR>";
             };
-            "<C-Down>" = {
+            "<M-Down>" = {
               action = ":resize +2<CR>";
             };
-            "<C-Left>" = {
+            "<M-Left>" = {
               action = ":vertical resize +2<CR>";
             };
-            "<C-Right>" = {
+            "<M-Right>" = {
               action = ":vertical resize -2<CR>";
             };
 
@@ -102,14 +114,7 @@
               action = ":move+<CR>";
             };
 
-            "<Leader>w" = {
-              action = "<Cmd>w<CR>"; # Action to perform (save the file in this case)
-              options = {
-                desc = "Save";
-              };
-            };
-
-            "j" = {
+            "dj" = {
               action = "v:count == 0 ? 'gj' : 'j'";
               options = {
                 desc = "Move cursor down";
@@ -123,8 +128,8 @@
                 expr = true;
               };
             };
-            "<Leader>q" = {
-              action = "<Cmd>confirm q<CR>";
+            "<Leader>qq" = {
+              action = "<Cmd>confirm qa<CR>";
               options = {
                 desc = "Quit";
               };
@@ -141,7 +146,7 @@
                 desc = "Force write";
               };
             };
-            "<leader>Q" = {
+            "<leader>qQ" = {
               action = "<Cmd>q!<CR>";
               options = {
                 desc = "Force quit";
