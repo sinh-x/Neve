@@ -2,7 +2,7 @@ _: {
   opts = {
     clipboard = {
       provider = {
-        wl-copy.enable = false;
+        wl-copy.enable = true;
         xclip.enable = true;
       };
     };
