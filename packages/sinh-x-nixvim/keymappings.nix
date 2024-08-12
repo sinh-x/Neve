@@ -8,7 +8,7 @@
 
   globals = {
     mapleader = " ";
-    maplocalleader = " ";
+    maplocalleader = "\\";
   };
 
   keymaps =
@@ -152,13 +152,13 @@
                 desc = "Force quit";
               };
             };
-            "|" = {
+            "<leader>|" = {
               action = "<Cmd>vsplit<CR>";
               options = {
                 desc = "Vertical split";
               };
             };
-            "\\" = {
+            "<leader>-" = {
               action = "<Cmd>split<CR>";
               options = {
                 desc = "Horizontal split";
