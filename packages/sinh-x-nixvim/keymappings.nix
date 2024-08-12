@@ -39,11 +39,6 @@
               action = "y$";
             };
 
-            # back and fourth between the two most recent files
-            "<C-c>" = {
-              action = ":b#<CR>";
-            };
-
             "<C-s>" = {
               action = "<cmd>w<cr>";
               options = {
@@ -373,7 +368,6 @@
                 desc = "Indent line";
               };
             };
-
             # Move selected line/block in visual mode
             "K" = {
               action = ":m '<-2<CR>gv=gv";
@@ -421,5 +415,54 @@
             };
           };
     in
-    helpers.keymaps.mkKeymaps { options.silent = true; } (normal ++ visual ++ insert);
+    helpers.keymaps.mkKeymaps { options.silent = true; } (normal ++ visual ++ insert)
+    ++ [
+      # Paste stuff without saving the deleted word into the buffer
+      {
+        mode = "x";
+        key = "<leader>p";
+        action = "\"_dP";
+        options = {
+          desc = "Deletes to void register and paste over";
+        };
+      }
+
+      # Copy stuff to system clipboard with <leader> + y or just y to have it just in vim
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>y";
+        action = "\"+y";
+        options = {
+          desc = "Copy to system clipboard";
+        };
+      }
+
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>Y";
+        action = "\"+Y";
+        options = {
+          desc = "Copy to system clipboard";
+        };
+      }
+
+      # Delete to void register
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>D";
+        action = "\"_d";
+        options = {
+          desc = "Delete to void register";
+        };
+      }
+    ];
 }

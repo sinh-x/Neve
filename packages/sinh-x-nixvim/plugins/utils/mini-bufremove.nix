@@ -14,16 +14,6 @@
   keymaps = lib.mkIf (lib.hasAttr "bufremove" config.plugins.mini.modules) [
     {
       mode = "n";
-      key = "<leader>c";
-      action.__raw = # lua
-        ''require("mini.bufremove").delete'';
-      options = {
-        desc = "Close buffer";
-        silent = true;
-      };
-    }
-    {
-      mode = "n";
       key = "<C-x>";
       action.__raw = # lua
         ''require("mini.bufremove").delete'';
