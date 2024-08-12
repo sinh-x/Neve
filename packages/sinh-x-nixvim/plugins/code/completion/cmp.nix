@@ -37,7 +37,7 @@ in
           "<C-e>" = # lua
             "cmp.mapping.complete()";
           "<Esc>" = # lua
-            "cmp.mapping.close()";
+            "cmp.mapping(function(fallback) vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, true, true), 'n', true) cmp.mapping.close()(fallback) end)";
           "<Down>" = # lua
             "cmp.mapping(cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}), {'i', 's'})";
           "<Up>" = # lua

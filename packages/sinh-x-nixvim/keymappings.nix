@@ -4,6 +4,21 @@
     # lua
     ''
       function bool2str(bool) return bool and "on" or "off" end
+      function toggle_qf_list()
+        local qf_exists = false
+        for _, win in pairs(fn.getwininfo() or {}) do
+          if win['quickfix'] == 1 then
+            qf_exists = true
+          end
+        end
+        if qf_exists == true then
+          vim.cmd.cclose()
+          return
+        end
+        if not vim.tbl_isempty(vim.fn.getqflist()) then
+          vim.cmd.copen()
+        end
+      end
     '';
 
   globals = {
@@ -111,7 +126,7 @@
                 expr = true;
               };
             };
-            "k" = {
+            "dk" = {
               action = "v:count == 0 ? 'gk' : 'k'";
               options = {
                 desc = "Move cursor up";
@@ -162,6 +177,13 @@
                 silent = true;
               };
             };
+            "<C-,>" = {
+              action = ":b#<CR>";
+              options = {
+                desc = "Cycle last 2 active buffer";
+                silent = true;
+              };
+            };
             "<leader>b]" = {
               action = ":bnext<CR>";
               options = {
@@ -191,6 +213,36 @@
               };
             };
 
+            "<C-c>" = {
+              action.__raw = # lua
+                ''
+                  function ()
+                    local qf_exists = false
+                    for _, win in pairs(vim.fn.getwininfo() or {}) do
+                      if win['quickfix'] == 1 then
+                        qf_exists = true
+                      end
+                    end
+                    if qf_exists == true then
+                      vim.cmd.cclose()
+                      return
+                    end
+                    if not vim.tbl_isempty(vim.fn.getqflist()) then
+                      vim.cmd.copen()
+                    end
+                  end
+                '';
+              options = {
+                desc = "Toggle quickfix list";
+              };
+            };
+
+            "[c" = {
+              action = ":cprev<CR>";
+            };
+            "]c" = {
+              action = ":cnext<CR>";
+            };
             "<leader>ud" = {
               action.__raw =
                 # lua

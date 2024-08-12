@@ -157,4 +157,29 @@ in
       };
     }
   ];
+
+  extraConfigLua = mkIf config.plugins.noice.enable ''
+    require("noice").setup({
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "written",
+          },
+          opts = { skip = true },
+        },
+      },
+      cmdline = {
+        format = {
+          search_down = {
+            view = "cmdline",
+          },
+          search_up = {
+            view = "cmdline",
+          },
+        },
+      },
+    })
+  '';
 }
