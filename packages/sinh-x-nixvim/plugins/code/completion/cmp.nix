@@ -86,14 +86,6 @@ in
             priority = 750;
           }
           {
-            name = "codeium";
-            priority = 300;
-          }
-          {
-            name = "copilot";
-            priority = 300;
-          }
-          {
             name = "buffer";
             priority = 500;
             option = {
@@ -126,6 +118,14 @@ in
           }
           {
             name = "calc";
+            priority = 150;
+          }
+          {
+            name = "codeium";
+            priority = 150;
+          }
+          {
+            name = "copilot";
             priority = 150;
           }
           {
@@ -178,6 +178,7 @@ in
     -- Setup cmp for R
     cmp.setup.filetype('r', {
       sources = cmp.config.sources({
+        { name = 'cmp_r' },
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'nvim_lsp_document_symbol' },
