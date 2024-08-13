@@ -1,8 +1,15 @@
-_: {
+{ lib, pkgs, ... }:
+let
+  inherit (lib) mkDefault;
+in
+{
   opts = {
     clipboard = {
       provider = {
-        wl-copy.enable = true;
+        wl-copy = {
+          enable = true;
+          package = pkgs.wl-clipboard;
+        };
         xclip.enable = true;
       };
     };
@@ -28,7 +35,7 @@ _: {
     incsearch = true;
 
     # Enable text wrap
-    wrap = true;
+    wrap = false;
 
     # Better splitting
     splitbelow = true;
@@ -56,17 +63,36 @@ _: {
 
     # Enable the sign column to prevent the screen from jumping
     signcolumn = "yes";
-
+    # spelllang = mkDefault [ "en_us" ]; # Spell check languages
+    # spell = true; # Highlight spelling mistakes (local to window)
     # Enable cursor line highlight
     cursorline = true; # Highlight the line where the cursor is located
 
     # Set fold settings
     # These options were reccommended by nvim-ufo
     # See: https://github.com/kevinhwang91/nvim-ufo#minimal-configuration
+    foldlevel = 99; # Folds with a level higher than this number will be closed
     foldcolumn = "1";
-    foldlevel = 99;
-    foldlevelstart = 99;
     foldenable = true;
+    foldlevelstart = -1;
+    fillchars = {
+      horiz = "━";
+      horizup = "┻";
+      horizdown = "┳";
+      vert = "┃";
+      vertleft = "┫";
+      vertright = "┣";
+      verthoriz = "╋";
+
+      eob = " ";
+      diff = "╱";
+
+      fold = " ";
+      foldopen = "";
+      foldclose = "";
+
+      msgsep = "‾";
+    };
 
     # Always keep 8 lines above/below cursor unless at start/end of file
     scrolloff = 8;

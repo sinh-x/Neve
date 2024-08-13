@@ -2,9 +2,34 @@ _: {
 
   plugins = {
     mini = {
-      enable = false;
+      enable = true;
 
       modules = {
+        sessions = {
+          autoread = false;
+          autowrite = true;
+          # hooks = {
+          #   # Before successful action
+          #   pre = {
+          #     read = "nil";
+          #     write = "nil";
+          #     delete = "nil";
+          #   };
+          #   # After successful action
+          #   post = {
+          #     read = "nil";
+          #     write = "nil";
+          #     delete = "nil";
+          #   };
+          # };
+
+          # Whether to print session path after action
+          verbose = {
+            read = false;
+            write = true;
+            delete = true;
+          };
+        };
         starter = {
           header = ''
             " ███████╗██╗███╗   ██╗██╗  ██╗     ██╗  ██╗ "
