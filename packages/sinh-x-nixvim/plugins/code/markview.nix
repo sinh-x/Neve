@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+_: {
 
-  extraPlugins = [ pkgs.vimPlugins.markview-nvim ];
-
-  extraConfigLuaPre = # lua
-    ''
-      require("markview").setup()
-    '';
+  # extraPlugins = [ pkgs.vimPlugins.markview-nvim ];
+  #
+  # extraConfigLuaPre = # lua
+  #   ''
+  #     require("markview").setup()
+  #   '';
 }
