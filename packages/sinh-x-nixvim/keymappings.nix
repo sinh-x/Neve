@@ -47,6 +47,21 @@
               action = "<NOP>";
             };
 
+            "<leader>ss" = {
+              action = ":lua require('persistence').load()<cr>";
+              options = {
+                silent = true;
+                desc = "Restore session";
+              };
+            };
+
+            "<leader>sl" = {
+              action = ":lua require('persistence').load({ last = true })<cr>";
+              options = {
+                silent = true;
+                desc = "Restore last session";
+              };
+            };
             # Esc to clear search results
             "<esc>" = {
               action = ":noh<CR>";

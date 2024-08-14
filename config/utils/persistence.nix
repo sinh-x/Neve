@@ -1,5 +1,5 @@
 {
   plugins.persistence = {
-    enable = false;
+    enable = true;
   };
 }

@@ -5,31 +5,31 @@ _: {
       enable = true;
 
       modules = {
-        sessions = {
-          autoread = false;
-          autowrite = true;
-          # hooks = {
-          #   # Before successful action
-          #   pre = {
-          #     read = "nil";
-          #     write = "nil";
-          #     delete = "nil";
-          #   };
-          #   # After successful action
-          #   post = {
-          #     read = "nil";
-          #     write = "nil";
-          #     delete = "nil";
-          #   };
-          # };
-
-          # Whether to print session path after action
-          verbose = {
-            read = false;
-            write = true;
-            delete = true;
-          };
-        };
+        # sessions = {
+        #   autoread = false;
+        #   autowrite = true;
+        #   # hooks = {
+        #   #   # Before successful action
+        #   #   pre = {
+        #   #     read = "nil";
+        #   #     write = "nil";
+        #   #     delete = "nil";
+        #   #   };
+        #   #   # After successful action
+        #   #   post = {
+        #   #     read = "nil";
+        #   #     write = "nil";
+        #   #     delete = "nil";
+        #   #   };
+        #   # };
+        #
+        #   # Whether to print session path after action
+        #   verbose = {
+        #     read = false;
+        #     write = true;
+        #     delete = true;
+        #   };
+        # };
         starter = {
           header = ''
             " ███████╗██╗███╗   ██╗██╗  ██╗     ██╗  ██╗ "
@@ -49,8 +49,8 @@ _: {
               "require('mini.starter').sections.recent_files(10, false)";
             "__unkeyed.recent_files".__raw = # Lua
               "require('mini.starter').sections.recent_files(10, true)";
-            "__unkeyed.sessions".__raw = # Lua
-              "require('mini.starter').sections.sessions(5, true)";
+            # "__unkeyed.sessions".__raw = # Lua
+            # "require('mini.starter').sections.sessions(5, true)";
           };
 
           content_hooks = {
