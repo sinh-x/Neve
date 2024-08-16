@@ -8,6 +8,20 @@ let
   inherit (lib) getExe mkIf;
 in
 {
+  extraPackages = with pkgs; [
+    lldb
+    lua-language-server
+    nodePackages.svelte-language-server
+    nodePackages.typescript-language-server
+    python312Packages.black
+    python312Packages.demjson3
+    rust-analyzer
+    selene
+    statix
+    stylua
+    vscode-langservers-extracted
+  ];
+
   extraConfigLuaPre =
     # lua
     ''
