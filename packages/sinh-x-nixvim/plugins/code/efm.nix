@@ -1,7 +1,7 @@
 _: {
   plugins = {
     lsp.servers.efm = {
-      enable = false;
+      enable = true;
       extraOptions.init_options = {
         documentFormatting = false;
         documentRangeFormatting = false;
