@@ -29,23 +29,25 @@
     };
   };
 
-  outputs = inputs: let
-    inherit (inputs) snowfall-lib;
+  outputs =
+    inputs:
+    let
+      inherit (inputs) snowfall-lib;
 
-    lib = snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
+      lib = snowfall-lib.mkLib {
+        inherit inputs;
+        src = ./.;
 
-      snowfall = {
-        meta = {
-          name = "sinh-x-nixvim";
-          title = "sinh-x-nixvim";
+        snowfall = {
+          meta = {
+            name = "sinh-x-nixvim";
+            title = "Sinh-x-nixvim";
+          };
+
+          namespace = "sinh-x";
         };
-
-        namespace = "sinh-x-nixvim";
       };
-    };
-  in
+    in
     lib.mkFlake {
       alias = {
         packages = {
@@ -58,6 +60,6 @@
         allowUnfree = true;
       };
 
-      outputs-builder = channels: {formatter = channels.nixpkgs.nixfmt-rfc-style;};
+      outputs-builder = channels: { formatter = channels.nixpkgs.nixfmt-rfc-style; };
     };
 }
