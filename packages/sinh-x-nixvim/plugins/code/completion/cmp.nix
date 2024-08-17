@@ -175,18 +175,41 @@ in
 
     local cmp = require'cmp'
 
+    -- Setup cmp for rust
+    cmp.setup.filetype('rust', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        { name = 'treesitter' },
+        { name = 'path' },
+        { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'spell' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
+      })
+    })
+
     -- Setup cmp for nix
     cmp.setup.filetype('nix', {
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'nvim_lsp_document_symbol' },
+        { name = 'treesitter' },
         { name = 'path' },
-        { name = 'buffer' },
         { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'spell' },
       }, {
         { name = 'copilot' },
         { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
       })
     })
 
@@ -197,6 +220,7 @@ in
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'nvim_lsp_document_symbol' },
+        { name = 'treesitter' },
         {
           name = 'path',
           priority = 1000,
@@ -208,11 +232,14 @@ in
             end,
           },
         },
-        { name = 'buffer' },
         { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'spell' },
       }, {
         { name = 'copilot' },
         { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
       })
     })
 
@@ -235,6 +262,18 @@ in
         { name = 'buffer' },
         { name = 'luasnip' },
       }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
+        })
+    })
+
+    cmp.setup.filetype('NeogitCommitMessage', {
+      sources = cmp.config.sources({
+        { name = 'git' },
+        { name = 'buffer' },
+        { name = 'spell' },
         { name = 'copilot' },
         { name = 'codeium' },
       })

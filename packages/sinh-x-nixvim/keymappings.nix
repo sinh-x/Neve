@@ -203,7 +203,7 @@
                 silent = true;
               };
             };
-            "<TAB>" = {
+            "<Tab>" = {
               action = ":bnext<CR>";
               options = {
                 desc = "Next buffer (default)";
@@ -217,11 +217,75 @@
                 silent = true;
               };
             };
-            "<S-TAB>" = {
+            "<S-Tab>" = {
               action = ":bprevious<CR>";
               options = {
                 desc = "Previous buffer";
                 silent = true;
+              };
+            };
+
+            "<leader>tt" = {
+              action = "<cmd>tabnew<cr>";
+              obtions = {
+                silent = true;
+                desc = "New tab";
+              };
+            };
+            "<leader>tx" = {
+              action = "<cmd>tabclose<cr>";
+              obtions = {
+                silent = true;
+                desc = "Close tab";
+              };
+            };
+            "<leader>t[" = {
+              action = "<cmd>tabprevious<cr>";
+              obtions = {
+                silent = true;
+                desc = "Close tab";
+              };
+            };
+            "<leader>t]" = {
+              action = "<cmd>tabnext<cr>";
+              obtions = {
+                silent = true;
+                desc = "Close tab";
+              };
+            };
+            "<leader>t1" = {
+              action = "<cmd>tabn 1<cr>";
+              obtions = {
+                silent = true;
+                desc = "Tab 1";
+              };
+            };
+            "<leader>t2" = {
+              action = "<cmd>tabn 2<cr>";
+              obtions = {
+                silent = true;
+                desc = "Tab 2";
+              };
+            };
+            "<leader>t3" = {
+              action = "<cmd>tabn 3<cr>";
+              obtions = {
+                silent = true;
+                desc = "Tab 3";
+              };
+            };
+            "<leader>t4" = {
+              action = "<cmd>tabn 4<cr>";
+              obtions = {
+                silent = true;
+                desc = "Tab 4";
+              };
+            };
+            "<leader>t5" = {
+              action = "<cmd>tabn 5<cr>";
+              obtions = {
+                silent = true;
+                desc = "Tab 5";
               };
             };
 

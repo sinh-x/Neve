@@ -158,14 +158,23 @@
         "n"
         "v"
       ];
+      key = "<leader>T";
+      action = "+Test";
+    }
+
+    {
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>t";
-      action = "+test";
+      action = "+Tab";
     }
 
     # Tabs
     {
       mode = "n";
-      key = "<leader><tab>l";
+      key = "<leader>tl";
       action = "<cmd>tablast<cr>";
       options = {
         silent = true;
@@ -175,7 +184,7 @@
 
     {
       mode = "n";
-      key = "<leader><tab>f";
+      key = "<leader>tf";
       action = "<cmd>tabfirst<cr>";
       options = {
         silent = true;
@@ -185,7 +194,7 @@
 
     {
       mode = "n";
-      key = "<leader><tab><tab>";
+      key = "<leader>tn";
       action = "<cmd>tabnew<cr>";
       options = {
         silent = true;
@@ -195,7 +204,7 @@
 
     {
       mode = "n";
-      key = "<leader><tab>]";
+      key = "<leader>t]";
       action = "<cmd>tabnext<cr>";
       options = {
         silent = true;
@@ -205,7 +214,7 @@
 
     {
       mode = "n";
-      key = "<leader><tab>d";
+      key = "<leader>tx";
       action = "<cmd>tabclose<cr>";
       options = {
         silent = true;
@@ -215,7 +224,7 @@
 
     {
       mode = "n";
-      key = "<leader><tab>[";
+      key = "<leader>t[";
       action = "<cmd>tabprevious<cr>";
       options = {
         silent = true;

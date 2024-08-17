@@ -63,8 +63,8 @@ in
 
     # Enable the sign column to prevent the screen from jumping
     signcolumn = "yes";
-    # spelllang = mkDefault [ "en_us" ]; # Spell check languages
-    # spell = true; # Highlight spelling mistakes (local to window)
+    spelllang = mkDefault [ "en_us" ]; # Spell check languages
+    spell = true; # Highlight spelling mistakes (local to window)
     # Enable cursor line highlight
     cursorline = true; # Highlight the line where the cursor is located
 
