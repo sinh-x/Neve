@@ -6,9 +6,10 @@
   extraConfigLuaPre = # lua
     ''
       require("smartcolumn").setup({
-        colorcolumn = "80",
+        colorcolumn = "120",
 
         disabled_filetypes = {
+          "ministarter",
           "help",
           "text",
           "markdown",
@@ -19,10 +20,9 @@
         },
 
         custom_colorcolumn = {
-          go = {"100", "130"},
-          java = { "100", "140" },
-          nix = { "100", "120" },
-          rust = { "80", "100" },
+          go = { "100" },
+          nix = { "120" },
+          rust = { "100" },
         },
 
         scope = "file",

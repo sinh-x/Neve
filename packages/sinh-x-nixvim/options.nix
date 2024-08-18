@@ -97,8 +97,8 @@ in
     # Always keep 8 lines above/below cursor unless at start/end of file
     scrolloff = 8;
 
-    # Place a column line
-    colorcolumn = "120";
+    # Place a column line - Disabled with smartcolumn plugin enable
+    # colorcolumn = "120";
 
     # Reduce which-key timeout to 10ms
     timeoutlen = 10;
