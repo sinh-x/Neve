@@ -175,6 +175,24 @@ in
 
     local cmp = require'cmp'
 
+    -- Setup cmp for markdow
+    cmp.setup.filetype('markdown', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        { name = 'treesitter' },
+        { name = 'path' },
+        { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'spell' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
+      })
+    })
     -- Setup cmp for rust
     cmp.setup.filetype('rust', {
       sources = cmp.config.sources({
