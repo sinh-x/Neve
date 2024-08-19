@@ -42,8 +42,8 @@
     };
     keymaps = {
       "<leader><space>" = {
-        action = "find_files";
-        options.desc = "Find project files";
+        action = "buffers";
+        options.desc = "Find buffers";
       };
       "<leader>/" = {
         action = "live_grep";
