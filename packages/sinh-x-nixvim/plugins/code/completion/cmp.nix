@@ -261,6 +261,22 @@ in
       })
     })
 
+    cmp.setup.filetype('toml', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        { name = 'path' },
+        { name = 'buffer' },
+        { name = 'luasnip' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
+        })
+    })
+
     cmp.setup.filetype('yaml', {
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },
