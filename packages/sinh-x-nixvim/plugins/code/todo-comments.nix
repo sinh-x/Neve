@@ -6,7 +6,11 @@ _: {
     keymaps = {
       todoTelescope = {
         key = "<leader>ft";
-        keywords = "TODO,FIX,FIXME";
+        keywords = [
+          "TODO"
+          "FIX"
+          "FIXME"
+        ];
       };
     };
   };

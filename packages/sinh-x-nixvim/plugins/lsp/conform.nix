@@ -89,181 +89,184 @@
     conform-nvim = {
       enable = true;
 
-      formatOnSave =
-        # lua
-        ''
-          function(bufnr)
-            if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-              return
-            end
+      settings = {
 
-            if slow_format_filetypes[vim.bo[bufnr].filetype] then
-              return
-            end
-
-            local function on_format(err)
-              if err and err:match("timeout$") then
-                slow_format_filetypes[vim.bo[bufnr].filetype] = true
+        format_on_save =
+          # lua
+          ''
+            function(bufnr)
+              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                return
               end
+
+              if slow_format_filetypes[vim.bo[bufnr].filetype] then
+                return
+              end
+
+              local function on_format(err)
+                if err and err:match("timeout$") then
+                  slow_format_filetypes[vim.bo[bufnr].filetype] = true
+                end
+              end
+
+              return { timeout_ms = 200, lsp_fallback = true }, on_format
+             end
+          '';
+
+        format_after_save =
+          # lua
+          ''
+            function(bufnr)
+              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                return
+              end
+
+              if not slow_format_filetypes[vim.bo[bufnr].filetype] then
+                return
+              end
+
+              return { lsp_fallback = true }
             end
+          '';
 
-            return { timeout_ms = 200, lsp_fallback = true }, on_format
-           end
-        '';
+        # NOTE:
+        # Conform will run multiple formatters sequentially
+        # [ "1" "2" "3"]
+        # Use a sub-list to run only the first available formatter
+        # [ ["1"] ["2"] ["3"] ]
+        # Use the "*" filetype to run formatters on all filetypes.
+        # Use the "_" filetype to run formatters on filetypes that don't
+        # have other formatters configured.
+        formatters_by_ft = {
+          bash = [
+            "shellcheck"
+            "shellharden"
+            "shfmt"
+          ];
+          bicep = [ "bicep" ];
+          c = [ "clang_format" ];
+          cmake = [ "cmake-format" ];
+          cpp = [ "clang_format" ];
+          cs = [ "csharpier" ];
+          css = [ "stylelint" ];
+          fish = [ "fish_indent" ];
+          fsharp = [ "fantomas" ];
+          javascript = [
+            [
+              "prettierd"
+              "prettier"
+            ]
+          ];
+          json = [ "jq" ];
+          lua = [ "stylua" ];
+          markdown = [ "deno_fmt" ];
+          nix = [ "nixfmt" ];
+          python = [
+            "isort"
+            "black"
+          ];
+          rust = [ "rustfmt" ];
+          sh = [
+            "shellcheck"
+            "shellharden"
+            "shfmt"
+          ];
+          sql = [ "sqlfluff" ];
+          swift = [ "swift_format" ];
+          terraform = [ "terraform_fmt" ];
+          toml = [ "taplo" ];
+          typescript = [
+            [
+              "prettierd"
+              "prettier"
+            ]
+          ];
+          xml = [
+            "xmlformat"
+            "xmllint"
+          ];
+          yaml = [ "yamlfmt" ];
+          zig = [ "zigfmt" ];
+          "_" = [
+            "squeeze_blanks"
+            "trim_whitespace"
+            "trim_newlines"
+          ];
+        };
 
-      formatAfterSave =
-        # lua
-        ''
-          function(bufnr)
-            if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-              return
-            end
-
-            if not slow_format_filetypes[vim.bo[bufnr].filetype] then
-              return
-            end
-
-            return { lsp_fallback = true }
-          end
-        '';
-
-      # NOTE:
-      # Conform will run multiple formatters sequentially
-      # [ "1" "2" "3"]
-      # Use a sub-list to run only the first available formatter
-      # [ ["1"] ["2"] ["3"] ]
-      # Use the "*" filetype to run formatters on all filetypes.
-      # Use the "_" filetype to run formatters on filetypes that don't
-      # have other formatters configured.
-      formattersByFt = {
-        bash = [
-          "shellcheck"
-          "shellharden"
-          "shfmt"
-        ];
-        bicep = [ "bicep" ];
-        c = [ "clang_format" ];
-        cmake = [ "cmake-format" ];
-        cpp = [ "clang_format" ];
-        cs = [ "csharpier" ];
-        css = [ "stylelint" ];
-        fish = [ "fish_indent" ];
-        fsharp = [ "fantomas" ];
-        javascript = [
-          [
-            "prettierd"
-            "prettier"
-          ]
-        ];
-        json = [ "jq" ];
-        lua = [ "stylua" ];
-        markdown = [ "deno_fmt" ];
-        nix = [ "nixfmt" ];
-        python = [
-          "isort"
-          "black"
-        ];
-        rust = [ "rustfmt" ];
-        sh = [
-          "shellcheck"
-          "shellharden"
-          "shfmt"
-        ];
-        sql = [ "sqlfluff" ];
-        swift = [ "swift_format" ];
-        terraform = [ "terraform_fmt" ];
-        toml = [ "taplo" ];
-        typescript = [
-          [
-            "prettierd"
-            "prettier"
-          ]
-        ];
-        xml = [
-          "xmlformat"
-          "xmllint"
-        ];
-        yaml = [ "yamlfmt" ];
-        zig = [ "zigfmt" ];
-        "_" = [
-          "squeeze_blanks"
-          "trim_whitespace"
-          "trim_newlines"
-        ];
-      };
-
-      formatters = {
-        black = {
-          command = lib.getExe pkgs.black;
-        };
-        bicep = {
-          command = lib.getExe pkgs.bicep;
-        };
-        cmake-format = {
-          command = lib.getExe pkgs.cmake-format;
-        };
-        csharpier = {
-          command = lib.getExe pkgs.csharpier;
-        };
-        deno_fmt = {
-          command = lib.getExe pkgs.deno;
-        };
-        isort = {
-          command = lib.getExe pkgs.isort;
-        };
-        fantomas = {
-          command = lib.getExe pkgs.fantomas;
-        };
-        jq = {
-          command = lib.getExe pkgs.jq;
-        };
-        nixfmt = {
-          command = lib.getExe pkgs.nixfmt-rfc-style;
-        };
-        prettierd = {
-          command = lib.getExe pkgs.prettierd;
-        };
-        rustfmt = {
-          command = lib.getExe pkgs.rustfmt;
-        };
-        shellcheck = {
-          command = lib.getExe pkgs.shellcheck;
-        };
-        shfmt = {
-          command = lib.getExe pkgs.shfmt;
-        };
-        shellharden = {
-          command = lib.getExe pkgs.shellharden;
-        };
-        sqlfluff = {
-          command = lib.getExe pkgs.sqlfluff;
-        };
-        squeeze_blanks = {
-          comamnd = lib.getExe' pkgs.coreutils "cat";
-        };
-        stylelint = {
-          command = lib.getExe pkgs.stylelint;
-        };
-        stylua = {
-          command = lib.getExe pkgs.stylua;
-        };
-        swift_format = {
-          command = lib.getExe pkgs.swift-format;
-        };
-        taplo = {
-          command = lib.getExe pkgs.taplo;
-        };
-        terraform_fmt = {
-          command = lib.getExe pkgs.terraform;
-        };
-        xmlformat = {
-          command = lib.getExe pkgs.xmlformat;
-        };
-        yamlfmt = {
-          command = lib.getExe pkgs.yamlfmt;
-        };
-        zigfmt = {
-          command = lib.getExe pkgs.zig;
+        formatters = {
+          black = {
+            command = lib.getExe pkgs.black;
+          };
+          bicep = {
+            command = lib.getExe pkgs.bicep;
+          };
+          cmake-format = {
+            command = lib.getExe pkgs.cmake-format;
+          };
+          csharpier = {
+            command = lib.getExe pkgs.csharpier;
+          };
+          deno_fmt = {
+            command = lib.getExe pkgs.deno;
+          };
+          isort = {
+            command = lib.getExe pkgs.isort;
+          };
+          fantomas = {
+            command = lib.getExe pkgs.fantomas;
+          };
+          jq = {
+            command = lib.getExe pkgs.jq;
+          };
+          nixfmt = {
+            command = lib.getExe pkgs.nixfmt-rfc-style;
+          };
+          prettierd = {
+            command = lib.getExe pkgs.prettierd;
+          };
+          rustfmt = {
+            command = lib.getExe pkgs.rustfmt;
+          };
+          shellcheck = {
+            command = lib.getExe pkgs.shellcheck;
+          };
+          shfmt = {
+            command = lib.getExe pkgs.shfmt;
+          };
+          shellharden = {
+            command = lib.getExe pkgs.shellharden;
+          };
+          sqlfluff = {
+            command = lib.getExe pkgs.sqlfluff;
+          };
+          squeeze_blanks = {
+            comamnd = lib.getExe' pkgs.coreutils "cat";
+          };
+          stylelint = {
+            command = lib.getExe pkgs.stylelint;
+          };
+          stylua = {
+            command = lib.getExe pkgs.stylua;
+          };
+          swift_format = {
+            command = lib.getExe pkgs.swift-format;
+          };
+          taplo = {
+            command = lib.getExe pkgs.taplo;
+          };
+          terraform_fmt = {
+            command = lib.getExe pkgs.terraform;
+          };
+          xmlformat = {
+            command = lib.getExe pkgs.xmlformat;
+          };
+          yamlfmt = {
+            command = lib.getExe pkgs.yamlfmt;
+          };
+          zigfmt = {
+            command = lib.getExe pkgs.zig;
+          };
         };
       };
     };
