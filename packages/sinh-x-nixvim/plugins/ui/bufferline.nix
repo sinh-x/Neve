@@ -181,10 +181,10 @@ in
             separator = {
               fg = commonFgColor;
             };
-            separatorVisible = {
+            separator_visible = {
               fg = commonFgColor;
             };
-            separatorSelected = {
+            separator_selected = {
               bg = commonBgColor;
               fg = commonFgColor;
             };
