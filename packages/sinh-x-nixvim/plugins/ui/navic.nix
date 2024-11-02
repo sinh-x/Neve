@@ -4,13 +4,14 @@ _: {
   plugins.navic = {
     enable = true;
 
-    lsp = {
-      autoAttach = true;
-      preference = [
-        "clangd"
-        "tsserver"
-      ];
+    settings = {
+      lsp = {
+        autoAttach = true;
+        preference = [
+          "clangd"
+          "tsserver"
+        ];
+      };
     };
   };
 }
-

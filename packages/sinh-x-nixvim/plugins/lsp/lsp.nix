@@ -120,7 +120,7 @@ in
           ];
         };
 
-        csharp-ls = {
+        csharp_ls = {
           enable = true;
           filetypes = [ "cs" ];
         };
@@ -156,6 +156,7 @@ in
 
         gdscript = {
           enable = true;
+          package = null;
           filetypes = [
             "gd"
             "gdscript"
@@ -168,12 +169,12 @@ in
           filetypes = [ "html" ];
         };
 
-        java-language-server = {
+        java_language_server = {
           enable = !config.plugins.nvim-jdtls.enable;
           filetypes = [ "java" ];
         };
 
-        jdt-language-server = {
+        jdtls = {
           inherit (config.plugins.nvim-jdtls) enable;
           filetypes = [ "java" ];
         };
@@ -186,7 +187,7 @@ in
           ];
         };
 
-        lua-ls = {
+        lua_ls = {
           enable = true;
           filetypes = [ "lua" ];
         };
@@ -196,7 +197,7 @@ in
           filetypes = [ "markdown" ];
         };
 
-        nil-ls = {
+        nil_ls = {
           enable = true;
           filetypes = [ "nix" ];
           settings = {
@@ -216,10 +217,11 @@ in
           filetypes = [ "python" ];
         };
 
-        r-language-server = {
+        r_language_server = {
           enable = true;
           autostart = true;
           filetypes = [ "r" ];
+          package = null;
         };
 
         svelte = {
@@ -233,8 +235,8 @@ in
           ];
         };
 
-        rust-analyzer = {
-          enable = mkIf (!config.plugins.rustaceanvim.enable) true;
+        rust_analyzer = {
+          enable = false;
           filetypes = [ "rust" ];
           installCargo = true;
           installRustc = true;
@@ -285,7 +287,7 @@ in
           filetypes = [ "toml" ];
         };
 
-        tsserver = {
+        ts_ls = {
           enable = true;
           filetypes = [
             "javascript"
