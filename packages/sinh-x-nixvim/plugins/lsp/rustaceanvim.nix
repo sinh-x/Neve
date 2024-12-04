@@ -6,7 +6,7 @@
 
   plugins = {
     rustaceanvim = {
-      enable = true;
+      enable = false;
       settings = {
 
         dap = {

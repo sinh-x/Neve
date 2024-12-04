@@ -236,7 +236,7 @@ in
         };
 
         rust_analyzer = {
-          enable = false;
+          enable = true;
           filetypes = [ "rust" ];
           installCargo = true;
           installRustc = true;
