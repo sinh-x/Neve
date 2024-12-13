@@ -150,7 +150,7 @@ in
         };
 
         fsautocomplete = {
-          enable = true;
+          enable = false;
           filetypes = [ "fsharp" ];
         };
 
