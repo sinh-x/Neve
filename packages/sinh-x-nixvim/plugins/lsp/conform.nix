@@ -173,7 +173,7 @@
           ];
           sql = [ "sqlfluff" ];
           swift = [ "swift_format" ];
-          terraform = [ "terraform_fmt" ];
+          # terraform = [ "terraform_fmt" ];
           toml = [ "taplo" ];
           typescript = [
             [
