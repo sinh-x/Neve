@@ -2,12 +2,12 @@ _: {
   # extraPlugins = with pkgs.vimUtils; [
   #   (buildVimPlugin {
   #     pname = "R-nvim";
-  #     version = "2024-07-17";
+  #     version = "2025-01-10";
   #     src = pkgs.fetchFromGitHub {
   #       owner = "R-nvim";
   #       repo = "R.nvim";
-  #       rev = "d13c230503204f52094d95bb6f42992e71cf4e70";
-  #       sha256 = "sha256-1+o3Iga7oXT98G1CWaPiOCCWlY5/yjJBgd4kUwbSd+w=";
+  #       rev = "d989047c8577409094e956d9847a96fb7a16595f";
+  #       sha256 = "sha256-YiKcFsyf+N/pwJLKfq9L2jX1RTaOMrD3VxtwaE3U35g=";
   #     };
   #   })
   # ];

@@ -8,6 +8,8 @@ _: {
       nixvimInjections = true;
 
       settings = {
+        ensure_installed = "all";
+
         highlight = {
           additional_vim_regex_highlighting = true;
           enable = true;
@@ -32,6 +34,7 @@ _: {
         indent = {
           enable = true;
         };
+
       };
 
       # NOTE: Default is to install all grammars, here's a more concise list of ones i care about
