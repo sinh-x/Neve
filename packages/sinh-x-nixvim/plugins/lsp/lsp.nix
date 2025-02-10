@@ -9,7 +9,7 @@ let
 in
 {
   extraPackages = with pkgs; [
-    lldb
+    # lldb
     lua-language-server
     nodePackages.svelte-language-server
     nodePackages.typescript-language-server
