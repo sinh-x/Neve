@@ -1,6 +1,6 @@
 {
   plugins.copilot-lua = {
-    enable = true;
+    enable = false;
     settings = {
       panel = {
         enabled = false;
@@ -45,5 +45,5 @@
       serverOptsOverrides = { };
     };
   };
-  plugins.copilot-chat.enable = true;
+  plugins.copilot-chat.enable = false;
 }

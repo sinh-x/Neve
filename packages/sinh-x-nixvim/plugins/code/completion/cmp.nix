@@ -121,11 +121,7 @@ in
             priority = 150;
           }
           {
-            name = "codeium";
-            priority = 150;
-          }
-          {
-            name = "copilot";
+            name = "avante";
             priority = 150;
           }
           {
@@ -156,7 +152,7 @@ in
           buffer = "";
           calc = "";
           cmdline = "";
-          codeium = "󱜙";
+          avante = "󱜙";
           emoji = "󰞅";
           git = "";
           luasnip = "󰩫";
@@ -187,8 +183,7 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
+        { name = 'gemini' },
         { name = 'emoji' },
         { name = 'calc' },
       })

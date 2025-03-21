@@ -457,19 +457,19 @@
               };
             };
 
-            "<leader>aa" = {
-              action = "<cmd>CopilotChatToggle<cr>";
-              options = {
-                desc = "CopilotChat Toggle";
-              };
-            };
+            # "<leader>aa" = {
+            #   action = "<cmd>CopilotChatToggle<cr>";
+            #   options = {
+            #     desc = "CopilotChat Toggle";
+            #   };
+            # };
 
-            "<leader>aV" = {
-              action = "ggvG$<cmd>CopilotChat<cr>";
-              options = {
-                desc = "CopilotChat Whole File";
-              };
-            };
+            # "<leader>aV" = {
+            #   action = "ggvG$<cmd>CopilotChat<cr>";
+            #   options = {
+            #     desc = "CopilotChat Whole File";
+            #   };
+            # };
           };
       visual =
         lib.mapAttrsToList
