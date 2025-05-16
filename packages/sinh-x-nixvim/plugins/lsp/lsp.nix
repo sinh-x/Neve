@@ -170,12 +170,12 @@ in
         };
 
         java_language_server = {
-          enable = !config.plugins.nvim-jdtls.enable;
+          enable = !config.plugins.jdtls.enable;
           filetypes = [ "java" ];
         };
 
         jdtls = {
-          inherit (config.plugins.nvim-jdtls) enable;
+          inherit (config.plugins.jdtls) enable;
           filetypes = [ "java" ];
         };
 

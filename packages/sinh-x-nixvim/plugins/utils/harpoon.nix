@@ -4,22 +4,8 @@
     harpoon = {
       enable = true;
       enableTelescope = true;
-      keymapsSilent = true;
-      menu = {
-        width = 120;
-      };
-      keymaps = {
-        addFile = "<leader>ha";
-        toggleQuickMenu = "<leader>he";
-        navFile = {
-          "1" = "<leader>h1";
-          "2" = "<leader>h2";
-          "3" = "<leader>h3";
-          "4" = "<leader>h4";
-          "5" = "<leader>h5";
-        };
-      };
     };
+
     which-key.settings.spec = lib.optionals config.plugins.harpoon.enable [
       {
         __unkeyed = "<leader>h";
@@ -55,4 +41,37 @@
       }
     ];
   };
+
+  keymaps = [
+    {
+      mode = "n";
+      key = "<leader>a";
+      action.__raw = "function() require'harpoon':list():add() end";
+    }
+    {
+      mode = "n";
+      key = "<C-e>";
+      action.__raw = "function() require'harpoon'.ui:toggle_quick_menu(require'harpoon':list()) end";
+    }
+    {
+      mode = "n";
+      key = "<C-j>";
+      action.__raw = "function() require'harpoon':list():select(1) end";
+    }
+    {
+      mode = "n";
+      key = "<C-k>";
+      action.__raw = "function() require'harpoon':list():select(2) end";
+    }
+    {
+      mode = "n";
+      key = "<C-l>";
+      action.__raw = "function() require'harpoon':list():select(3) end";
+    }
+    {
+      mode = "n";
+      key = "<C-m>";
+      action.__raw = "function() require'harpoon':list():select(4) end";
+    }
+  ];
 }
