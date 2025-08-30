@@ -145,23 +145,25 @@ in
     lspkind = {
       enable = true;
 
-      cmp = {
-        enable = true;
+      settings = {
+        cmp = {
+          enable = true;
 
-        menu = {
-          buffer = "";
-          calc = "";
-          cmdline = "";
-          avante = "󱜙";
-          emoji = "󰞅";
-          git = "";
-          luasnip = "󰩫";
-          neorg = "";
-          nvim_lsp = "";
-          nvim_lua = "";
-          path = "";
-          spell = "";
-          treesitter = "󰔱";
+          menu = {
+            buffer = "";
+            calc = "";
+            cmdline = "";
+            avante = "󱜙";
+            emoji = "󰞅";
+            git = "";
+            luasnip = "󰩫";
+            neorg = "";
+            nvim_lsp = "";
+            nvim_lua = "";
+            path = "";
+            spell = "";
+            treesitter = "󰔱";
+          };
         };
       };
     };
