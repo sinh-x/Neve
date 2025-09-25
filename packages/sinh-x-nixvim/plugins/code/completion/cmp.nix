@@ -228,6 +228,34 @@ in
       })
     })
 
+    -- Setup cmp for python
+    cmp.setup.filetype('python', {
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        { name = 'treesitter' },
+        {
+          name = 'path',
+          priority = 1000,
+          option = {
+            trailing_slash = false,
+            label_trailing_slash = true,
+            get_cwd = function()
+              return vim.fn.getcwd()
+            end,
+          },
+        },
+        { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'spell' },
+      }, {
+        { name = 'copilot' },
+        { name = 'codeium' },
+        { name = 'emoji' },
+        { name = 'calc' },
+      })
+    })
     -- Setup cmp for R
     cmp.setup.filetype('r', {
       sources = cmp.config.sources({
