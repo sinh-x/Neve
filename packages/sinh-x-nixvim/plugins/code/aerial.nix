@@ -1,0 +1,5 @@
+{
+  plugins.aerial = {
+    enable = true;
+  };
+}
