@@ -101,16 +101,18 @@ _: {
 
     treesitter-refactor = {
       enable = true;
+      settings = {
 
-      highlightDefinitions = {
-        enable = true;
-        clearOnCursorMove = true;
-      };
-      smartRename = {
-        enable = true;
-      };
-      navigation = {
-        enable = true;
+        highlight_definitions = {
+          enable = true;
+          clear_on_cursor_move = true;
+        };
+        smart_rename = {
+          enable = true;
+        };
+        navigation = {
+          enable = true;
+        };
       };
     };
   };

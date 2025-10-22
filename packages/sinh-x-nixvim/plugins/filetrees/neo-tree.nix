@@ -33,43 +33,46 @@
   plugins.neo-tree = {
     enable = true;
 
-    enableDiagnostics = true;
-    enableGitStatus = true;
-    enableModifiedMarkers = true;
-    enableRefreshOnWrite = true;
-    closeIfLastWindow = true;
+    settings = {
+      enableDiagnostics = true;
+      enableGitStatus = true;
+      enableModifiedMarkers = true;
+      enableRefreshOnWrite = true;
+      closeIfLastWindow = true;
 
-    popupBorderStyle = "rounded"; # Type: null or one of “NC”, “double”, “none”, “rounded”, “shadow”, “single”, “solid” or raw lua code
+      popup_border_style = "rounded"; # Type: null or one of “NC”, “double”, “none”, “rounded”, “shadow”, “single”, “solid” or raw lua code
 
-    buffers = {
-      bindToCwd = true;
-      followCurrentFile = {
-        enabled = true;
+      buffers = {
+        bind_to_cwd = true;
+        follow_current_file = {
+          enabled = true;
+        };
+      };
+
+      filesystem = {
+        filtered_items = {
+          hideDotfiles = false;
+          hideHidden = false;
+
+          neverShowByPattern = [
+            ".direnv"
+            ".git"
+          ];
+
+          visible = true;
+        };
+
+        follow_current_file = {
+          enabled = true;
+          leave_dirs_open = true;
+        };
+
+        useLibuvFileWatcher.__raw =
+          # lua
+          ''vim.fn.has "win32" ~= 1'';
       };
     };
 
-    filesystem = {
-      filteredItems = {
-        hideDotfiles = false;
-        hideHidden = false;
-
-        neverShowByPattern = [
-          ".direnv"
-          ".git"
-        ];
-
-        visible = true;
-      };
-
-      followCurrentFile = {
-        enabled = true;
-        leaveDirsOpen = true;
-      };
-
-      useLibuvFileWatcher.__raw =
-        # lua
-        ''vim.fn.has "win32" ~= 1'';
-    };
   };
 
   extraConfigLua = ''

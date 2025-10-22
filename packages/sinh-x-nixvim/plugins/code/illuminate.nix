@@ -4,13 +4,15 @@ _: {
     illuminate = {
       enable = true;
 
-      filetypesDenylist = [
-        "dirvish"
-        "fugitive"
-        "neo-tree"
-        "TelescopePrompt"
-      ];
-      largeFileCutoff = 3000;
+      settings = {
+        filetypesDenylist = [
+          "dirvish"
+          "fugitive"
+          "neo-tree"
+          "TelescopePrompt"
+        ];
+        largeFileCutoff = 3000;
+      };
     };
   };
 }

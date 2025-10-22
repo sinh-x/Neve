@@ -71,7 +71,7 @@ in
                     return msg
                 end
               '';
-            icon = "";
+            icon = "";
             color.fg = "#ffffff";
           }
           "encoding"
@@ -140,22 +140,22 @@ in
           }
         ];
       };
-    };
 
-    tabline = mkIf (!config.plugins.bufferline.enable) {
-      lualine_a = [
-        # NOTE: not high priority since i use bufferline now, but should fix left separator color
-        {
-          name = "buffers";
-          extraConfig = {
-            symbols = {
-              alternate_file = "";
+      # Move tabline inside settings
+      tabline = mkIf (!config.plugins.bufferline.enable) {
+        lualine_a = [
+          # NOTE: not high priority since i use bufferline now, but should fix left separator color
+          {
+            name = "buffers";
+            extraConfig = {
+              symbols = {
+                alternate_file = "";
+              };
             };
-          };
-        }
-      ];
-      lualine_z = [ "tabs" ];
+          }
+        ];
+        lualine_z = [ "tabs" ];
+      };
     };
-
   };
 }
