@@ -4,7 +4,7 @@ _: {
     treesitter = {
       enable = true;
 
-      folding = true;
+      folding.enable = true;
       nixvimInjections = true;
 
       settings = {
@@ -99,21 +99,30 @@ _: {
       # ];
     };
 
-    treesitter-refactor = {
-      enable = true;
-      settings = {
-
-        highlight_definitions = {
-          enable = true;
-          clear_on_cursor_move = true;
-        };
-        smart_rename = {
-          enable = true;
-        };
-        navigation = {
-          enable = true;
-        };
-      };
-    };
+    # treesitter-refactor = {
+    #   enable = false;
+    #   # DEPRECATED: nvim-treesitter-refactor is archived and incompatible with nvim-treesitter main branch
+    #   # Repository: https://github.com/nvim-treesitter/nvim-treesitter-refactor (archived Nov 28, 2025)
+    #   #
+    #   # RECOMMENDED ALTERNATIVE: nvim-treesitter-locals
+    #   # See: https://github.com/nvim-treesitter/nvim-treesitter-locals
+    #   # Provides LSP-like functionality based on treesitter locals
+    #   #
+    #   # For refactoring functionality, consider:
+    #   # - Built-in LSP: vim.lsp.buf.definition(), vim.lsp.buf.rename(), etc.
+    #   # - Plugin: refactoring.nvim (already enabled in ../refactoring.nix)
+    #   settings = {
+    #     highlight_definitions = {
+    #       enable = true;
+    #       clear_on_cursor_move = true;
+    #     };
+    #     smart_rename = {
+    #       enable = true;
+    #     };
+    #     navigation = {
+    #       enable = true;
+    #     };
+    #   };
+    # };
   };
 }

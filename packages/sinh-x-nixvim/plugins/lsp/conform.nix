@@ -172,7 +172,7 @@
             "shfmt"
           ];
           sql = [ "sqlfluff" ];
-          swift = [ "swift_format" ];
+          # swift = [ "swift_format" ]; # Disabled due to Swift build issues in nixpkgs
           # terraform = [ "terraform_fmt" ];
           toml = [ "taplo" ];
           typescript = [
@@ -249,9 +249,9 @@
           stylua = {
             command = lib.getExe pkgs.stylua;
           };
-          swift_format = {
-            command = lib.getExe pkgs.swift-format;
-          };
+          # swift_format = {
+          #   command = lib.getExe pkgs.swift-format;
+          # }; # Disabled due to Swift build issues in nixpkgs
           taplo = {
             command = lib.getExe pkgs.taplo;
           };
