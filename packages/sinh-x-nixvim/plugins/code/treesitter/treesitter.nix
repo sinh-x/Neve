@@ -4,7 +4,7 @@ _: {
     treesitter = {
       enable = true;
 
-      folding = true;
+      folding.enable = true;
       nixvimInjections = true;
 
       settings = {
@@ -100,7 +100,7 @@ _: {
     };
 
     treesitter-refactor = {
-      enable = true;
+      enable = false; # Temporarily disabled due to build error in nixpkgs
       settings = {
 
         highlight_definitions = {

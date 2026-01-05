@@ -4,20 +4,23 @@
   namespace,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (inputs) pre-commit-hooks-nix;
   inherit (lib) getExe;
 in
-  pre-commit-hooks-nix.lib.${pkgs.system}.run {
-    src = ./.;
-    hooks = let
+pre-commit-hooks-nix.lib.${pkgs.stdenv.hostPlatform.system}.run {
+  src = ./.;
+  hooks =
+    let
       excludes = [
         "flake.lock"
         "CHANGELOG.md"
       ];
       fail_fast = true;
       verbose = true;
-    in {
+    in
+    {
       deadnix = {
         enable = true;
 
@@ -34,7 +37,7 @@ in
         description = "pre-push hook for git-cliff";
         entry = "${getExe pkgs.${namespace}.git-cliff}";
         language = "system";
-        stages = ["pre-push"];
+        stages = [ "pre-push" ];
       };
 
       luacheck.enable = true;
@@ -49,4 +52,4 @@ in
       statix.enable = true;
       # treefmt.enable = true;
     };
-  }
+}

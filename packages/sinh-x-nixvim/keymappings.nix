@@ -1,4 +1,4 @@
-{ helpers, lib, ... }:
+{ lib, ... }:
 {
   extraConfigLuaPre =
     # lua
@@ -561,7 +561,7 @@
             };
           };
     in
-    helpers.keymaps.mkKeymaps { options.silent = true; } (normal ++ visual ++ insert)
+    lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (normal ++ visual ++ insert)
     ++ [
       # Paste stuff without saving the deleted word into the buffer
       {
