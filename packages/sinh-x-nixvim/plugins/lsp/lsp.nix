@@ -202,7 +202,7 @@ in
           filetypes = [ "nix" ];
           settings = {
             formatting = {
-              command = [ "${getExe pkgs.nixfmt-rfc-style}" ];
+              command = [ "${getExe pkgs.nixfmt}" ];
             };
             nix = {
               flake = {
