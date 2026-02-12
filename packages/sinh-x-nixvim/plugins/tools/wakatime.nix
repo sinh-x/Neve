@@ -1,5 +1,5 @@
 {
   plugins.wakatime = {
-    enable = true;
+    enable = false;
   };
 }
