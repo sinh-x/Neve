@@ -4,336 +4,131 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Nix flake-based Neovim configuration using nixvim and Snowfall Lib. The configuration is structured as a modular, declarative Neovim setup with 79+ plugins organized by category.
+Nix flake-based Neovim configuration using **nixvim** and **Snowfall Lib**. ~77 plugins organized as auto-discovered NixOS modules. Colorscheme: TokyoNight (storm, transparent).
 
 ## Build and Development Commands
 
-### Building the Neovim Package
 ```bash
-# Build the default package
-nix build
-
-# Build and run Neovim
-nix run
-
-# Build the nvim alias
-nix build .#nvim
-
-# Enter development shell (includes pre-commit hooks)
-nix develop
+nix build              # Build the default package (also: nix build .#nvim)
+nix run                # Build and run Neovim
+nix fmt                # Format all Nix files (uses nixfmt)
+nix flake check        # Run pre-commit hooks
+nix develop            # Dev shell (pre-commit hooks, nix-inspect, fish shell)
+nix flake update       # Update all flake inputs
+nix flake lock --update-input nixvim  # Update specific input
 ```
 
-### Code Quality
-```bash
-# Format all Nix files
-nix fmt
+**Pre-commit hooks:** deadnix (auto-fix), nixfmt, statix, luacheck, pre-commit-hook-ensure-sops
 
-# Run pre-commit hooks manually
-nix flake check
-
-# The pre-commit hooks include:
-# - deadnix: Remove unused Nix code (auto-fix with --edit)
-# - nixfmt-rfc-style: Format Nix files
-# - statix: Lint Nix code
-# - luacheck: Check Lua syntax
-# - pre-commit-hook-ensure-sops: Ensure no secrets
-```
-
-### Updating Dependencies
-```bash
-# Update all flake inputs
-nix flake update
-
-# Update specific input
-nix flake lock --update-input nixvim
-```
+**Environment:** `.envrc` provides direnv integration (`use flake`). Dev shell auto-switches to zsh.
 
 ## Architecture
 
-### Directory Structure
+### Module System (Key Concept)
 
-```
-sinh-x-Neve/
-├── flake.nix                    # Main flake configuration
-├── packages/sinh-x-nixvim/      # Main Neovim package
-│   ├── default.nix              # Entry point (calls makeNixvimWithModule)
-│   ├── options.nix              # Vim editor options (~70 settings)
-│   ├── keymappings.nix          # Global keybindings
-│   ├── autocommands.nix         # Event-triggered commands
-│   ├── ft.nix                   # Filetype detection rules
-│   └── plugins/                 # Plugin configurations (79 files)
-│       ├── ui/                  # UI components (lualine, bufferline, noice, etc.)
-│       ├── code/                # Code editing (treesitter, completion/, aerial, etc.)
-│       ├── lsp/                 # Language servers and formatting
-│       ├── git/                 # Git integration (gitsigns, neogit, diffview)
-│       ├── utils/               # Navigation and utilities (telescope, harpoon)
-│       ├── snippets/            # Snippet engines
-│       ├── filetrees/           # File explorers
-│       └── tools/               # Specialized tools
-├── config/                      # Additional configuration
-│   └── keymaps.nix              # Extra keymaps
-├── lib/                         # Custom library utilities
-│   ├── module/default.nix       # Helper functions (mkOpt, mkBoolOpt, enabled, etc.)
-│   ├── file/default.nix         # File manipulation utilities
-│   └── theme/default.nix        # Theme compilation (SCSS)
-├── shells/default/              # Development shell
-└── checks/pre-commit-hooks/     # Quality checks
-```
+The entry point `packages/sinh-x-nixvim/default.nix` calls `makeNixvimWithModule` and uses `lib.snowfall.fs.get-non-default-nix-files-recursive` to auto-import every `.nix` file (except `default.nix` files) as a NixOS module. **No manual imports needed** — just create a `.nix` file in the right directory.
 
-### Module System
+Modules are merged via the NixOS module system. Use `lib.mkIf` for conditional config and `lib.optionals` for conditional list items.
 
-The configuration uses Snowfall Lib's automatic file discovery:
-- All `.nix` files in `packages/sinh-x-nixvim/` are automatically imported
-- Each file returns a NixOS module (attribute set)
-- Modules are merged using NixOS module system (`mkIf`, `mkDefault`, etc.)
-- Files named `default.nix` are entry points, not auto-imported as modules
+### Key Files
 
-### Entry Point (packages/sinh-x-nixvim/default.nix)
+| File | Purpose |
+|------|---------|
+| `packages/sinh-x-nixvim/default.nix` | Entry point, colorscheme config |
+| `packages/sinh-x-nixvim/options.nix` | Vim options (~70 settings, Neovide config, clipboard providers) |
+| `packages/sinh-x-nixvim/keymappings.nix` | Primary keybindings + toggle functions (line numbers, wrap, inlay hints) |
+| `packages/sinh-x-nixvim/autocommands.nix` | Auto-save on focus lost, highlight on yank, save/load views, macro indicators |
+| `packages/sinh-x-nixvim/ft.nix` | Custom filetype detection (avsc->json, rasi->scss, hypr->hyprlang) |
+| `config/keymaps.nix` | Additional keymaps with toggle functions (diagnostics, autoformat, spell, completions) |
+| `packages/sinh-x-nixvim/plugins/lsp/lsp.nix` | LSP server configs |
+| `packages/sinh-x-nixvim/plugins/lsp/conform.nix` | Formatter configs (20+ languages) |
+| `packages/sinh-x-nixvim/plugins/code/completion/cmp.nix` | Completion sources with priorities |
 
-```nix
-nixvim.legacyPackages.${system}.makeNixvimWithModule {
-  inherit pkgs;
-  module = {
-    imports = lib.snowfall.fs.get-non-default-nix-files-recursive ./.;
-    # ... global config (colorscheme, highlights)
-  };
-}
-```
+### Two Keymap Files
 
-This recursively imports all non-default.nix files as modules.
+There are two separate keymap files that both contribute keybindings:
+- **`keymappings.nix`** — Core keybindings (buffer nav, window splits, search, movement) + Lua toggle functions
+- **`config/keymaps.nix`** — Extended toggles (diagnostics, autoformat, spell, fold column, completions) using a `lib.mapAttrsToList` pattern with a `bool2str` helper
 
-## Adding or Modifying Configuration
+Both are auto-imported and merged. They have some overlapping bindings (e.g., `<C-s>` for save).
 
-### Adding a New Plugin
+### Plugin Categories
 
-1. Create a new file in the appropriate category:
-   ```bash
-   # Example: adding a new UI plugin
-   touch packages/sinh-x-nixvim/plugins/ui/my-plugin.nix
-   ```
+Plugins live in `packages/sinh-x-nixvim/plugins/` organized by:
+- **code/** (35 files) — treesitter, completion, aerial, avante, copilot, refactoring, motions (hop, leap, eyeliner)
+- **ui/** (13) — bufferline, noice, notify, indent guides, alpha dashboard, mini-starter
+- **utils/** (13) — telescope, harpoon, which-key, spectre, persistence, project-nvim
+- **git/** (6) — gitsigns, neogit, diffview, git-conflict, mini-diff, git-worktree
+- **lsp/** (5) — lsp servers, conform, fidget, rustaceanvim, R.nvim
+- **filetrees/** (2) — neo-tree, yazi
+- **tools/** (2) — wakatime, qmk
+- **snippets/** (1) — luasnip
 
-2. Write the module (automatically imported):
-   ```nix
-   { lib, config, ... }:
-   {
-     plugins.my-plugin = {
-       enable = true;
-       settings = {
-         # plugin configuration
-       };
-     };
+### Disabled-by-Default Plugins
 
-     # Optional: Add keymaps that activate only if plugin is enabled
-     keymaps = lib.mkIf config.plugins.my-plugin.enable [
-       {
-         mode = "n";
-         key = "<leader>mp";
-         action = "<cmd>MyPluginCommand<CR>";
-         options.desc = "My plugin action";
-       }
-     ];
+Several plugins exist as config files but are `enable = false`: lualine, fidget, rustaceanvim, codeium, efm, colorizer, copilot, copilot-chat, treesitter-textobjects. Enable them by changing `enable = true` in their respective files.
 
-     # Optional: Register with which-key
-     plugins.which-key.settings.spec = lib.optionals config.plugins.my-plugin.enable [
-       {
-         __unkeyed = "<leader>m";
-         group = "My Plugin";
-       }
-     ];
-   }
-   ```
+### Leader Key Organization
 
-### Adding/Modifying LSP Servers
+Leader: `<Space>`, Local leader: `\`
 
-Edit `packages/sinh-x-nixvim/plugins/lsp/lsp.nix`:
+| Prefix | Group |
+|--------|-------|
+| `<leader>b` | Buffers |
+| `<leader>f` | Find (telescope) |
+| `<leader>l` | LSP |
+| `<leader>g` | Git |
+| `<leader>gh` | Git hunks |
+| `<leader>h` | Harpoon |
+| `<leader>r` | Refactor |
+| `<leader>t` | Terminal |
+| `<leader>u` | UI/UX toggles |
+| `<leader>q` | Quit |
+
+## Adding a New Plugin
+
+Create a file in the appropriate category (auto-imported):
 
 ```nix
-servers.new_language_server = {
-  enable = true;
-  filetypes = ["newlang"];
-  settings = {
-    # LSP-specific settings
-  };
-};
-```
-
-Currently configured LSP servers: ccls, clangd, cmake, lua-ls, bashls, pyright, nil_ls, marksman, html, cssls, tailwindcss, typescript, svelte, eslint, gdscript, dockerls, java, jsonls, yamlls, taplo, r-languageserver, and more.
-
-### Adding Global Keymaps
-
-Edit `packages/sinh-x-nixvim/keymappings.nix` or `config/keymaps.nix`:
-
-```nix
-# In the opts.keymaps list:
+{ lib, config, ... }:
 {
-  mode = "n";  # normal, visual, insert, etc.
-  key = "<leader>x";
-  action = "<cmd>Command<CR>";
-  options = {
-    silent = true;
-    desc = "Description for which-key";
+  plugins.my-plugin = {
+    enable = true;
+    settings = { };
   };
-}
-```
-
-**Key organization:**
-- Leader key: `<Space>`
-- Local leader: `\`
-- Prefixes: `<leader>b` (buffers), `<leader>f` (find), `<leader>l` (LSP), `<leader>g` (git), `<leader>u` (UI toggles), `<leader>h` (harpoon), etc.
-
-### Modifying Vim Options
-
-Edit `packages/sinh-x-nixvim/options.nix`:
-
-```nix
-opts = {
-  # Add or modify editor options
-  relativenumber = true;
-  tabstop = 2;
-  # ... etc
-};
-```
-
-### Adding Autocommands
-
-Edit `packages/sinh-x-nixvim/autocommands.nix`:
-
-```nix
-{
-  event = "BufWritePre";  # Event to trigger on
-  pattern = "*";           # File pattern
-  callback = {
-    __raw = ''
-      function()
-        -- Lua code here
-      end
-    '';
-  };
-}
-```
-
-### Adding Filetype Detection
-
-Edit `packages/sinh-x-nixvim/ft.nix`:
-
-```nix
-extension = {
-  "myext" = "mylang";
-};
-pattern = {
-  ".*/path/pattern" = "filetype";
-};
-```
-
-## Key Plugin Configurations
-
-### Completion (plugins/code/completion/cmp.nix)
-
-Source priority order:
-1. LSP (1000) - Language server completions
-2. Treesitter (850) - Syntax-aware completions
-3. Luasnip (750) - Snippets
-4. Buffer/Path (500) - Text and filesystem
-5. Special sources (300-100) - spell, git, npm, calc, emoji
-
-Filetype-specific configurations exist for Rust, Python, Markdown, YAML, and R.
-
-### LSP Keymaps (plugins/lsp/lsp.nix)
-
-All LSP keymaps use `<leader>l` prefix:
-- `<leader>la` - Code action
-- `<leader>ld` - Go to definition
-- `<leader>lD` - Find references
-- `<leader>lf` - Format buffer
-- `<leader>lh` - Hover documentation
-- `<leader>ln/p` - Next/previous diagnostic
-- `<leader>lt` - Type definition
-
-### Formatting System (plugins/lsp/conform.nix)
-
-Conform is the primary formatter with LSP fallback. Format toggle available via keymaps.
-
-### Git Integration
-
-- **gitsigns**: Signs, blame, hunk operations
-- **neogit**: Full git interface
-- **diffview**: Side-by-side diffs
-- **git-conflict**: Merge conflict resolution UI
-
-## Library Utilities (lib/module/default.nix)
-
-Helper functions available throughout the config:
-
-```nix
-mkOpt type default description    # Create option with description
-mkBoolOpt description default     # Boolean option helper
-enabled / disabled                # Quick {enable = true/false;} objects
-capitalize string                 # Capitalize first letter
-boolToNum bool                    # Convert bool to 1/0
-default-attrs attrs               # Apply mkDefault to all attributes
-```
-
-## Common Patterns
-
-### Conditional Plugin Configuration
-
-```nix
-# Disable plugin A if plugin B is enabled
-plugins.plugin-a.enable = lib.mkIf (!config.plugins.plugin-b.enable) true;
-```
-
-### Adding Lua Configuration
-
-```nix
-{
-  plugins.my-plugin.enable = true;
-
-  extraConfigLua = ''
-    -- Custom Lua code runs after plugin setup
-  '';
-
-  extraConfigLuaPre = ''
-    -- Custom Lua code runs before plugin setup
-  '';
-}
-```
-
-### Conditional Keymaps with which-key
-
-```nix
-{
-  plugins.my-plugin.enable = true;
 
   keymaps = lib.mkIf config.plugins.my-plugin.enable [
-    # keymaps only active if plugin is enabled
+    {
+      mode = "n";
+      key = "<leader>mp";
+      action = "<cmd>MyPluginCommand<CR>";
+      options.desc = "My plugin action";
+    }
   ];
 
   plugins.which-key.settings.spec = lib.optionals config.plugins.my-plugin.enable [
-    # which-key specs only if plugin is enabled
+    { __unkeyed = "<leader>m"; group = "My Plugin"; }
   ];
 }
 ```
 
-## Testing Changes
+## Library Utilities
 
-After making configuration changes:
+**`lib/module/default.nix`** — `mkOpt`, `mkOpt'`, `mkBoolOpt`, `mkBoolOpt'`, `enabled`/`disabled` shorthand, `capitalize`, `boolToNum`, `default-attrs`, `nested-default-attrs`
 
-```bash
-# Rebuild and test
-nix build
+**`lib/file/default.nix`** — `fileWithText` (append text after file), `fileWithText'` (prepend text before file)
 
-# Run the new configuration
-nix run
+**`lib/theme/default.nix`** — `compileSCSS` (compiles SCSS to CSS using sassc)
 
-# Or install to your system (if using home-manager/NixOS)
-# home-manager switch --flake .#your-config
-```
+**`lib/default.nix`** — `override-meta` (override package meta attributes)
 
-## Important Notes
+## CI/CD
 
-- All plugin files are automatically discovered - no manual imports needed
-- Use `lib.mkIf` for conditional configuration to avoid evaluation errors
-- Keymaps should use `options.desc` for which-key integration
-- The colorscheme is TokyoNight (storm variant with transparency)
-- Pre-commit hooks run automatically in the dev shell
-- LSP servers are declaratively configured via nixvim, not manually installed
+GitHub Actions (`.github/workflows/update.yml`) runs on PRs: statix fix, nix fmt, flake checker, then auto-commits. Note: CI installs alejandra alongside statix but `nix fmt` uses nixfmt from the flake — the alejandra install is unused.
+
+## Flake Details
+
+- **Namespace:** `sinh-x`
+- **Aliases:** `default` and `nvim` both point to `sinh-x-nixvim`
+- **Inputs:** nixpkgs (unstable), nixvim, snowfall-lib, snowfall-flake, pre-commit-hooks-nix
+- **allowUnfree:** true
