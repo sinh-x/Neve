@@ -149,6 +149,7 @@
           cpp = [ "clang_format" ];
           cs = [ "csharpier" ];
           css = [ "stylelint" ];
+          dart = [ "dart_format" ];
           fish = [ "fish_indent" ];
           fsharp = [ "fantomas" ];
           javascript = [
@@ -206,6 +207,10 @@
           };
           csharpier = {
             command = lib.getExe pkgs.csharpier;
+          };
+          dart_format = {
+            command = lib.getExe pkgs.dart;
+            args = [ "format" ];
           };
           deno_fmt = {
             command = lib.getExe pkgs.deno;
