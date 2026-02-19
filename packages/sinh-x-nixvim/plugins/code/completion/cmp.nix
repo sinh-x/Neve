@@ -121,10 +121,6 @@ in
             priority = 150;
           }
           {
-            name = "avante";
-            priority = 150;
-          }
-          {
             name = "emoji";
             priority = 100;
           }
@@ -132,9 +128,9 @@ in
 
         window = {
           completion.__raw = # lua
-            ''cmp.config.window.bordered()'';
+            "cmp.config.window.bordered()";
           documentation.__raw = # lua
-            ''cmp.config.window.bordered()'';
+            "cmp.config.window.bordered()";
         };
       };
     };
@@ -153,7 +149,6 @@ in
             buffer = "";
             calc = "";
             cmdline = "";
-            avante = "󱜙";
             emoji = "󰞅";
             git = "";
             luasnip = "󰩫";
@@ -185,7 +180,6 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'gemini' },
         { name = 'emoji' },
         { name = 'calc' },
       })
@@ -202,8 +196,6 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
         { name = 'emoji' },
         { name = 'calc' },
       })
@@ -221,8 +213,6 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
         { name = 'emoji' },
         { name = 'calc' },
       })
@@ -250,8 +240,6 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
         { name = 'emoji' },
         { name = 'calc' },
       })
@@ -279,8 +267,6 @@ in
         { name = 'buffer' },
         { name = 'spell' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
         { name = 'emoji' },
         { name = 'calc' },
       })
@@ -296,8 +282,6 @@ in
           { name = 'buffer' },
           { name = 'luasnip' },
         }, {
-          { name = 'copilot' },
-          { name = 'codeium' },
           { name = 'emoji' },
           { name = 'calc' },
         })
@@ -323,8 +307,6 @@ in
         { name = 'buffer' },
         { name = 'luasnip' },
       }, {
-        { name = 'copilot' },
-        { name = 'codeium' },
         { name = 'emoji' },
         { name = 'calc' },
         })
@@ -335,8 +317,6 @@ in
         { name = 'git' },
         { name = 'buffer' },
         { name = 'spell' },
-        { name = 'copilot' },
-        { name = 'codeium' },
       })
     })
   '';
