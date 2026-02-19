@@ -7,10 +7,6 @@
     pkgs.vimPlugins.opencode-nvim
   ];
 
-  extraConfigLua = ''
-    require("opencode").setup({})
-  '';
-
   keymaps = [
     {
       mode = "n";
