@@ -457,19 +457,6 @@
               };
             };
 
-            # "<leader>aa" = {
-            #   action = "<cmd>CopilotChatToggle<cr>";
-            #   options = {
-            #     desc = "CopilotChat Toggle";
-            #   };
-            # };
-
-            # "<leader>aV" = {
-            #   action = "ggvG$<cmd>CopilotChat<cr>";
-            #   options = {
-            #     desc = "CopilotChat Whole File";
-            #   };
-            # };
           };
       visual =
         lib.mapAttrsToList
@@ -483,12 +470,6 @@
             }
           )
           {
-            "<leader>aa" = {
-              action = "<cmd>CopilotChatToggle<cr>";
-              options = {
-                desc = "CopilotChat Toggle";
-              };
-            };
             # Better indenting
             "<S-Tab>" = {
               action = "<gv";
