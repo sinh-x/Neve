@@ -104,7 +104,6 @@ in
           initOptions.compilationDatabaseDirectory = "build";
         };
 
-        # TODO: see what further configuration might be needed
         cmake = {
           enable = true;
           filetypes = [ "cmake" ];

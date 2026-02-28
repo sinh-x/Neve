@@ -26,7 +26,7 @@ _: {
         }
         {
           __unkeyed = "<leader>t";
-          group = " Terminal";
+          group = " Tab";
         }
         {
           __unkeyed = "<leader>u";
@@ -35,6 +35,30 @@ _: {
         {
           __unkeyed = "<leader>q";
           group = "Quit";
+        }
+        {
+          __unkeyed = "<leader>s";
+          group = " Search";
+        }
+        {
+          __unkeyed = "<leader>w";
+          group = " Windows";
+        }
+        {
+          __unkeyed = "<leader><Tab>";
+          group = " Tab";
+        }
+        {
+          __unkeyed = "<leader>d";
+          group = " Debug";
+        }
+        {
+          __unkeyed = "<leader>c";
+          group = " Code";
+        }
+        {
+          __unkeyed = "<leader>T";
+          group = " Test";
         }
       ];
 

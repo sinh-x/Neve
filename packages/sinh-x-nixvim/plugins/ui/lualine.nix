@@ -127,7 +127,6 @@ in
           }
         ];
 
-        # TODO: Need to dynamically hide/show component so navic takes precedence on smaller width
         lualine_x = [
           {
             name = "filename";
@@ -144,7 +143,6 @@ in
       # Move tabline inside settings
       tabline = mkIf (!config.plugins.bufferline.enable) {
         lualine_a = [
-          # NOTE: not high priority since i use bufferline now, but should fix left separator color
           {
             name = "buffers";
             extraConfig = {
