@@ -11,8 +11,8 @@ in
   extraPackages = with pkgs; [
     # lldb
     lua-language-server
-    nodePackages.svelte-language-server
-    nodePackages.typescript-language-server
+    svelte-language-server
+    typescript-language-server
     python312Packages.black
     python312Packages.demjson3
     rust-analyzer
