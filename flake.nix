@@ -15,13 +15,16 @@
 
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
 
-    # Snowfall Lib
+    # Snowfall Lib (still referenced by legacy auto-discovery in
+    # packages/sinh-x-nixvim/default.nix and shells/default/default.nix;
+    # scheduled for removal in NXN-002 Phase 4.6 once Phase 4.4 swaps the
+    # remaining call sites to the repo-owned helpers in lib/flake-support).
     snowfall-lib = {
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Snowfall Flake
+    # Snowfall Flake (same as snowfall-lib above; removed in NXN-002 Phase 4.6).
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,35 +33,8 @@
 
   outputs =
     inputs:
-    let
-      inherit (inputs) snowfall-lib;
-
-      lib = snowfall-lib.mkLib {
-        inherit inputs;
-        src = ./.;
-
-        snowfall = {
-          meta = {
-            name = "sinh-x-nixvim";
-            title = "Sinh-x-nixvim";
-          };
-
-          namespace = "sinh-x";
-        };
-      };
-    in
-    lib.mkFlake {
-      alias = {
-        packages = {
-          default = "sinh-x-nixvim";
-          nvim = "sinh-x-nixvim";
-        };
-      };
-
-      channels-config = {
-        allowUnfree = true;
-      };
-
-      outputs-builder = channels: { formatter = channels.nixpkgs.nixfmt; };
+    import ./lib/flake-support {
+      inherit inputs;
+      src = ./.;
     };
 }
