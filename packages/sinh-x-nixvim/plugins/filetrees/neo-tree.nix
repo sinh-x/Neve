@@ -4,7 +4,7 @@
     {
       mode = "n";
       key = "<leader>e";
-      action = ":Neotree toggle reveal_force_cwd<cr>";
+      action = "<cmd>lua SinhNeoTreeToggle()<cr>";
       options = {
         silent = true;
         desc = "Explorer NeoTree (root dir)";
@@ -76,6 +76,17 @@
   };
 
   extraConfigLua = ''
+    function SinhNeoTreeToggle()
+      local path = vim.api.nvim_buf_get_name(0)
+      local is_real_path = path ~= "" and (vim.fn.filereadable(path) == 1 or vim.fn.isdirectory(path) == 1)
+
+      if vim.bo.buftype ~= "" or not is_real_path then
+        vim.cmd("Neotree toggle dir=" .. vim.fn.fnameescape(vim.fn.getcwd()))
+      else
+        vim.cmd("Neotree toggle reveal_force_cwd")
+      end
+    end
+
     require("neo-tree").setup({
       event_handlers = {
         {
