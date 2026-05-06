@@ -17,6 +17,5 @@ mkShell {
   shellHook = ''
     ${inputs.self.checks.${system}.pre-commit-hooks.shellHook}
     echo 🔨 Welcome to ${namespace}
-    exec zsh
   '';
 }
