@@ -7,9 +7,8 @@ in
   plugins = {
     refactoring = {
       enable = true;
+      enableTelescope = mkIf config.plugins.telescope.enable true;
     };
-
-    telescope.enabledExtensions = mkIf config.plugins.telescope.enable [ "refactoring" ];
 
     which-key.settings.spec = lib.optionals config.plugins.telescope.enable [
       {
@@ -86,18 +85,18 @@ in
         };
       }
     ]
-    ++ lib.optionals config.plugins.telescope.enable [
+    ++ lib.optionals config.plugins.refactoring.enable [
       {
         mode = "n";
         key = "<leader>fR";
         action.__raw = # lua
           ''
             function()
-              require('telescope').extensions.refactoring.refactors()
+              require('refactoring').select_refactor()
             end
           '';
         options = {
-          desc = "Refactoring";
+          desc = "Select refactor";
           silent = true;
         };
       }
