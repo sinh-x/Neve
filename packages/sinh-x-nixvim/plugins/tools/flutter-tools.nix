@@ -11,11 +11,6 @@
     settings = {
       widget_guides.enabled = true;
       closing_tags.enabled = true;
-      lsp = {
-        color = {
-          enabled = true;
-        };
-      };
       debugger = {
         enabled = true;
       };
