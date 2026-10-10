@@ -1,0 +1,22 @@
+# Branch strategy for nixos-neve (same develop-flow schema as personal-nixos).
+# Human workflow: CONTRIBUTING.md. This file does not configure GitHub protection.
+version: 1
+strategy: develop-flow
+
+branches:
+  production: main
+  develop: develop
+  feature_pattern: "{prefix}{description}" # Use a kebab-case topic, optionally with a ticket ID.
+
+merge:
+  feature_target: develop
+  develop_target: production
+
+validation:
+  require_integration_prefix: false
+  allowed_prefixes: [feat/, fix/, refactor/, docs/, test/, chore/, hotfix/]
+  protected_branches: [main, develop]
+
+auto_detect:
+  enabled: true
+  timezone: local
