@@ -1,0 +1,45 @@
+name: Branch Policy
+
+on:
+  pull_request:
+    branches: [develop, main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  branch-policy:
+    name: Check PR target
+    runs-on: ubuntu-latest
+    steps:
+      # No checkout or PR-supplied code is needed to validate event metadata.
+      - name: Validate source and target
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$BASE_BRANCH" in
+            develop)
+              if [[ "$HEAD_BRANCH" =~ ^(feat|fix|refactor|docs|test|chore|hotfix)/.+$ ]]; then
+                echo "Topic or hotfix PR targets develop."
+                exit 0
+              fi
+              ;;
+            main)
+              if [[ "$HEAD_BRANCH" == develop && "$HEAD_REPO" == "$BASE_REPO" ]]; then
+                echo "Release PR promotes this repository's develop branch."
+                exit 0
+              fi
+              if [[ "$HEAD_BRANCH" =~ ^hotfix/.+$ ]]; then
+                echo "Production hotfix: also open a backport PR to develop."
+                exit 0
+              fi
+              ;;
+          esac
+          echo "::error::Invalid PR route: $HEAD_BRANCH -> $BASE_BRANCH. Topic branches target develop; main accepts this repository's develop or hotfix/<topic>."
+          exit 1

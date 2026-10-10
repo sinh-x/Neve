@@ -13,9 +13,9 @@ _: {
       settings = {
         defaults = {
           file_sorter.__raw = # Lua
-            ''require('mini.fuzzy').get_telescope_sorter'';
+            "require('mini.fuzzy').get_telescope_sorter";
           generic_sorter.__raw = # Lua
-            ''require('mini.fuzzy').get_telescope_sorter'';
+            "require('mini.fuzzy').get_telescope_sorter";
         };
       };
     };

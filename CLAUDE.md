@@ -6,13 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Nix flake-based Neovim configuration using **nixvim** and **Snowfall Lib**. ~77 plugins organized as auto-discovered NixOS modules. Colorscheme: TokyoNight (storm, transparent).
 
+## Branch Workflow
+
+Follow [CONTRIBUTING.md](CONTRIBUTING.md): create topic branches from `develop`
+and open normal PRs to `develop`. Never commit directly to `main` or `develop`.
+Releases merge `develop` → `main`; urgent `hotfix/` branches start from `main`
+and must reach both long-lived branches. Preserve merge history for releases
+and hotfixes. Machine-readable policy: `.claude/branch-strategy.yaml`.
+Cross-agent entry point: [AGENTS.md](AGENTS.md).
+
 ## Build and Development Commands
 
 ```bash
 nix build              # Build the default package (also: nix build .#nvim)
 nix run                # Build and run Neovim
-nix fmt                # Format all Nix files (uses nixfmt)
-nix flake check        # Run pre-commit hooks
+nix fmt path/to/file.nix # Format named Nix files (bare nixfmt; see CONTRIBUTING.md for all files)
+nix flake check        # Run configured flake checks
 nix develop            # Dev shell (pre-commit hooks, nix-inspect, fish shell)
 nix flake update       # Update all flake inputs
 nix flake lock --update-input nixvim  # Update specific input
@@ -124,7 +133,12 @@ Create a file in the appropriate category (auto-imported):
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/update.yml`) runs on PRs: statix fix, nix fmt, flake checker, then auto-commits. Note: CI installs alejandra alongside statix but `nix fmt` uses nixfmt from the flake — the alejandra install is unused.
+GitHub Actions (`.github/workflows/update.yml`) validates PRs targeting `develop`
+or `main` and pushes to both: formatting check, `nix flake check`, and Neovim
+build. It is read-only: no dependency updates, automatic fixes, or commits.
+`.github/workflows/branch-policy.yml` checks PR source/target branch conventions.
+See CONTRIBUTING.md for required GitHub protection settings; workflow files
+alone do not block direct pushes.
 
 ## Flake Details
 
