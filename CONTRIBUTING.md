@@ -97,8 +97,8 @@ GitHub Settings → Rules → Rulesets (or Branches → Branch protection) for b
 `main` and `develop`:
 
 - Require PRs and review before merging; restrict bypass permissions deliberately.
-- Require status checks **Branch Policy / Check PR target** and
-  **Nix Flake Check / Validate Nix** after their first successful runs.
+- Require status checks **Check PR target** (workflow: Branch Policy) and
+  **Validate Nix** (workflow: Nix Flake Check) after their first successful runs.
 - Require status checks to pass on the latest PR revision. These workflows do
   not support a merge queue (`merge_group`); leave it disabled.
 - Block force pushes and branch deletion, including deletion of `develop`.
