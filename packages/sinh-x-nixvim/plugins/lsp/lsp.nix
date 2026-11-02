@@ -13,8 +13,8 @@ in
     lua-language-server
     svelte-language-server
     typescript-language-server
-    python312Packages.black
-    python312Packages.demjson3
+    black
+    python3Packages.demjson3
     rust-analyzer
     selene
     statix
